@@ -109,8 +109,8 @@ alpha components. In our code, an RGBA color takes up 32-bits. Each component
 will be stored as one of its four bytes. That means that each component will be
 an 8-bit integer whose value lies in the range 0 to 255. It is sometimes
 convenient to think of components as lying in the continuous range
-[0,1], in which case you would divide the 8-bit component values by
-255. An airbrush image is a square RGBA image with dimensions
+[0,1], in which case you would divide the 8-bit component values by 255.
+An airbrush image is a square RGBA image with dimensions
 `2*radius+1` by `2*radius+1`. Each pixel has the same RGB values taken
 directly from the color but varying A (alpha) or opacity. In the brushes
 above, alpha is at its maximum at the center pixel and falls off to 0
@@ -121,9 +121,9 @@ center pixel as a fraction of the radius:
 
     *t* = sqrt( ( x - x₀)² + ( y - y₀ )² ) )/radius
     
-    $t = \frac{ \sqrt{ ( x - x_0 )^2 + ( y - y_0 )^2 } }{ \textit{radius} }$
-
     ![](docs/images/t.png)
+    
+    $t = \frac{ \sqrt{ ( x - x_0 )^2 + ( y - y_0 )^2 } }{ \textit{radius} }$
 
     Then all we need is a *falloff* function of *t* to create interesting
 circular shapes. With such a function, the each airbrush image pixel's
