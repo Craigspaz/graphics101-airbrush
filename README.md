@@ -83,7 +83,7 @@ the background image centered at the mouse location.
 Rubric:
 -------
 
-* **(50 points)** Creating a translucent RGBA image for a spray of the
+1. **(50 points)** Creating a translucent RGBA image for a spray of the
 airbrush. An airbrush is defined by its color, radius, and shape.
 Here are some examples:
 
@@ -129,16 +129,16 @@ center pixel as a fraction of the radius:
 circular shapes. With such a function, the each airbrush image pixel's
 alpha value is then conveniently expressed as color's alpha * *f(t)*.
 
-* **(25 points)** Writing the code that iterates over every x,y pixel of
+    * **(25 points)** Writing the code that iterates over every x,y pixel of
 the brush image and sets its RGBA components appropriately. That
 function signature is:
 
-        void create_airbrush(
-            QImage& airbrush_out,
-            AirBrushShape shape, int radius, QRgb color
-            )
+            void create_airbrush(
+                QImage& airbrush_out,
+                AirBrushShape shape, int radius, QRgb color
+                )
 
-    `QImage` is Qt's image class that wraps an array of RGBA values with
+        `QImage` is Qt's image class that wraps an array of RGBA values with
 convenience methods. The `&` is C++'s way of passing by reference (it's
 like a dereferenced pointer in C). `AirBrushShape` is an `enum`. You will
 assign every x,y pixel of the output parameter `airbrush_out`. x ranges
@@ -149,70 +149,69 @@ accessing the pointer to the array of pixels directly via
 `airbrush_out.scanLine()` (see below). To access the appropriate falloff function (the
 ones you write, see below), call the helper function `falloff( shape, t )`.
 
-* **(25 points)** Implement *falloff* functions for the following three
+    * **(25 points)** Implement *falloff* functions for the following three
 shapes.
 
-    ![plot of falloff functions](docs/images/falloffs.png)
+        ![plot of falloff functions](docs/images/falloffs.png)
 
-    * **(5 of the 25 points)** A constant function `falloff_constant()`. It just
+        * **(5 of the 25 points)** A constant function `falloff_constant()`. It just
 makes a circle. (These equations are shown 3 ways because GitHub's Markdown processing doesn't handle equations well.)
 
-    ![constant function](docs/images/constant.png)
-      
-    $$
-    f_\textit{constant}(t) =
-    \begin{cases}
-    1 & \text{if} \quad t < 1 \\
-    0 & \text{otherwise}
-    \end{cases}
-    $$
+            ![constant function](docs/images/constant.png)
 
-        falloff_constant(t) =
-            { 1 if t < 1
-            { 0 otherwise
+            $$
+            f_\textit{constant}(t) =
+            \begin{cases}
+            1 & \text{if} \quad t < 1 \\
+            0 & \text{otherwise}
+            \end{cases}
+            $$
 
+                falloff_constant(t) =
+                    { 1 if t < 1
+                    { 0 otherwise
 
-    * **(10 of the 25 points)** A linear function `falloff_linear()`. It makes a
-cone:
+        * **(10 of the 25 points)** A linear function `falloff_linear()`.
+It makes a "cone".
 
-    ![linear function](docs/images/linear.png)
+            ![linear function](docs/images/linear.png)
 
-    $$
-    f_\textit{linear}(t) =
-    \begin{cases}
-    1-t & \text{if} \quad t < 1 \\
-    0 & \text{otherwise}
-    \end{cases}
-    $$
+            $$
+            f_\textit{linear}(t) =
+            \begin{cases}
+            1-t & \text{if} \quad t < 1 \\
+            0 & \text{otherwise}
+            \end{cases}
+            $$
 
-        falloff_linear(t) =
-            { 1-t if t < 1
-            { 0   otherwise
+                falloff_linear(t) =
+                    { 1-t if t < 1
+                    { 0   otherwise
 
-    * **(10 of the 25 points)** A quadratic function `falloff_quadratic()` that
+        * **(10 of the 25 points)** A quadratic function `falloff_quadratic()` that
 looks like a Gaussian (very aesthetically pleasing) but without an
 infinite tail.
 
-    ![quadratic function](docs/images/quadratic.png)
+            ![quadratic function](docs/images/quadratic.png)
 
-    $$
-    f_\textit{quadratic}(t) =
-    \begin{cases}
-    1-3t^2 & \text{if\ \ \ } t < \frac{1}{3} \\
-    1.5t^2 - 3t + 1.5 & \text{if\ \ \ } \frac{1}{3} \leq t < 1 \\
-    0 & \text{otherwise}
-    \end{cases}
-    $$
+            $$
+            f_\textit{quadratic}(t) =
+            \begin{cases}
+            1-3t^2 & \text{if\ \ \ } t < \frac{1}{3} \\
+            1.5t^2 - 3t + 1.5 & \text{if\ \ \ } \frac{1}{3} \leq t < 1 \\
+            0 & \text{otherwise}
+            \end{cases}
+            $$
 
-        falloff_quadratic(t) =
-            { 1-3t^2            if t < 1/3
-            { 1.5t^2 - 3t + 1.5 if 1/3 <= t < 1
-            { 0                 otherwise
+                falloff_quadratic(t) =
+                    { 1-3t^2            if t < 1/3
+                    { 1.5t^2 - 3t + 1.5 if 1/3 <= t < 1
+                    { 0                 otherwise
 
-    * **(up to 5 bonus points)** A special function `falloff_special()` that does
+        * **(up to 5 bonus points)** A special function `falloff_special()` that does
 anything you want!
 
-* **(50 points)** Depositing the paint by compositing the airbrush RGBA
+2. **(50 points)** Depositing the paint by compositing the airbrush RGBA
 image onto the background image centered at the mouse location. The
 function signature for this is:
 
