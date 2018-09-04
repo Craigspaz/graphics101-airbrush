@@ -244,7 +244,7 @@ with this, I have created a helper function signature (you fill it in):
         Recall from class or the textbook or Wikipedia that the formula to
 composite a foreground color "over" a background color is:
 
-        *C.red = F.alpha * F.red + (1 - F.alpha) * B.red*
+        *C.red = (1 - F.alpha) * B.red + F.alpha * F.red*
 
         where *C* is the output composited pixel, *F* is the foreground pixel,
 and *B* is the background pixel. The formula is the same for the green
