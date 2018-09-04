@@ -300,14 +300,14 @@ parameters to have the exact same type. If not, you will get a very long
 compiler error since they are generic functions written using C++
 templates.
 
-**QRgb.** To get the red, green, blue, and alpha components of a QRgb
-color `c` as 8-bit values, use `qRed(c)`, `qGreen(c)`, `qBlue(c)`, and
-`qAlpha(c)`. In this assignment, we are ignoring alpha. To create an RGB
-`QRgb` color, use `qRgb( red, green, blue )` with 8-bit parameters. Note
-that `QRgb` is not a class or a struct. It is a `typedef` for an `unsigned
-int`, and those functions are just getting and setting the appropriate
-bytes. The header `qrgb.h` is very short and readable. Here is most of
-it:
+**QRgb.** To get the red, green, blue, and alpha components of a QRgb color `c`
+as 8-bit values, use `qRed(c)`, `qGreen(c)`, `qBlue(c)`, and `qAlpha(c)`. To
+create an RGB `QRgb` color, use `qRgb( red, green, blue )` with 8-bit
+parameters. To create an RGBA `QRgb` color, use `qRgba( red, green, blue, alpha )`
+with 8-bit parameters. Note that `QRgb` is not a class or a struct. It is a
+`typedef` for an `unsigned int`, and those functions are just getting and
+setting the appropriate bytes. The header `qrgb.h` is very short and readable.
+Here is most of it:
 
 ```c++
 typedef unsigned int QRgb;                        // RGB triplet
