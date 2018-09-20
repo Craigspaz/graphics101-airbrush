@@ -126,8 +126,10 @@ center pixel as a fraction of the radius:
     $t = \frac{ \sqrt{ ( x - x_0 )^2 + ( y - y_0 )^2 } }{ \textit{radius} }$
 
     Then all we need is a *falloff* function of *t* to create interesting
-circular shapes. With such a function, the each airbrush image pixel's
-alpha value is then conveniently expressed as color's alpha * *f(t)*.
+circular shapes. With such a function, each airbrush image pixel's
+alpha value is then conveniently expressed as the color's alpha * *f(t)*.
+Note that the user-specified color has an alpha value.
+We multiply it by the falloff function.
 
     * **(25 points)** Writing the code that iterates over every x,y pixel of
 the brush image and sets its RGBA components appropriately. That
