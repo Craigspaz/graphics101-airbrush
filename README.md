@@ -8,27 +8,32 @@ Goals:
 
 * Become familiar with C++.
 
-* Successfully install the Qt development environment.
+* Successfully install a C++ development environment and the Qt libraries.
 
 Getting Started & Handing In:
 -----------------------------
 
-* This is a programming assignment. You will need to download the code
-framework from Piazza.
+* Download or clone this code repository. Don't fork it on GitHub, or else your code will be visible to everyone.
 
-* The code will be written in C++, but nothing fancy. It will look like a
-mix of C and Java.
+* This assignment makes use of the cross-platform, open source Qt GUI framework.
+(At the time of writing, version 5.15 is the newest version. Any 5.x version should work.)
+Qt also has a nice integrated development environment (IDE) called Qt Creator.
+There are a few ways to get it:
 
-* The code is written using the open source Qt GUI framework. You will
-only need to understand a few functions, described below.
+    * Qt's online installer. This annoyingly requires you to create an account, but is the easiest way to install a compiler on Windows. Install the open source version of the Qt environment: <https://www.qt.io/download-open-source>
+    This installer, by default, includes all versions of
+    Qt. This is unnecessary and takes a huge amount of space.
+    Install only the most recent version (e.g. Qt 5.15) and the Qt Creator IDE.
+    On Windows, also install the MingW compiler.
 
-* The assignments make use of the cross-platform, open source Qt development environment,
-which comes with a great IDE. Install the open source version
+<https://www.qt.io/offline-installers> has installers for 5.12 and Qt Creator. You will need to bring your own compiler. Mac: Go to the app store and install XCode.
+Windows: https://wiki.qt.io/MinGW
+
+Install the open source version
 of the Qt environment: <https://www.qt.io/download-open-source>
-(At the time of writing, version 5.11 is the newest version. Any 5.x
-version should work.) This installer, by default, includes all versions of
+ This installer, by default, includes all versions of
 Qt. This is unnecessary and takes a huge amount of space.
-Install only the most recent version (e.g. Qt 5.11) and the Qt Creator IDE.
+Install only the most recent version (e.g. Qt 5.15) and the Qt Creator IDE.
 On Windows, also install the MingW compiler.
 
   * Mac users can alternatively install with [Homebrew](https://brew.sh/): `brew install qt` and `brew cask install qt-creator`.
@@ -43,20 +48,22 @@ and dragging in the window won't have any effect.
 
 * Add your code to `airbrush.cpp`.
 
+    * Your code will be written in C++, but nothing fancy. It will look like a
+    mix of C and Java.
+    * The framework and libraries provide all the support code that you need. You will need to understand a few functions, described below. Feel free to enhance the interface if you so desire.
+    * The framework code is written using the open source Qt GUI framework. Your code is isolated from this code.
+
 * Build and run and test that it is working correctly. Qt Creator has a
 great debugger.
 
-* Create a painting and save it into the folder.
+* Create a painting and save it into the folder. You are encouraged but not required to share it on Piazza, too.
 
-* When done, zip your entire `airbrush` directory along with a
-*Notes.txt* file and your painting as *hw01_lastname_firstname.zip* and
-upload your solution to Blackboard before the deadline. Your *Notes.txt*
-should describe any known issues or extra features. Your *Notes.txt*
-should also note the names of people in the class who deserve a star for
+* Create a file named `Notes.txt` in the folder. Describe any known issues or extra features. Name people in the class who deserve a star for
 helping you (not by giving your their code!).
 
-* The framework and libraries provide all the support code that you need.
-Feel free to enhance the interface if you so desire.
+* When done, zip your entire `airbrush` directory (including your
+`Notes.txt` file and your painting) as `hw01_lastname_firstname.zip` and
+upload your solution to Blackboard before the deadline.
 
 * **THIS IS AN INDIVIDUAL, NOT A GROUP ASSIGNMENT. That means all code
 written for this assignment should be original! Although you are
@@ -136,19 +143,19 @@ the brush image and sets its RGBA components appropriately. That
 function signature is:
 
             void create_airbrush(
-                QImage& airbrush_out,
-                AirBrushShape shape, int radius, QRgb color
+                Image& airbrush_out,
+                AirBrushShape shape, int radius, ColorRGB8 color
                 )
 
-        `QImage` is Qt's image class that wraps an array of RGBA values with
+        `Image` is a class that wraps an array of RGBA values with
 convenience methods. The `&` is C++'s way of passing by reference (it's
 like a dereferenced pointer in C). `AirBrushShape` is an `enum`. You will
 assign every x,y pixel of the output parameter `airbrush_out`. x ranges
 from 0 to `airbrush_out.width()` and y ranges from 0 to
 `airbrush_out.height()`. You can assign pixels either by calling
-`airbrush_out.setPixel()` or, if you want to work closer to the metal, by
+`airbrush_out.pixel()` or, if you want to work closer to the metal, by
 accessing the pointer to the array of pixels directly via
-`airbrush_out.scanLine()` (see below). To access the appropriate falloff function (the
+`airbrush_out.scanline()` (see below). To access the appropriate falloff function (the
 ones you write, see below), call the helper function `falloff( shape, t )`.
 
     * **(25 points)** Implement *falloff* functions for the following three
@@ -217,9 +224,11 @@ anything you want!
 image onto the background image centered at the mouse location. The
 function signature for this is:
 
-        QRect paint_at(
-            QImage& image_to_modify,
-            const QImage& airbrush_image, const QPoint& center
+        Rect paint_at(
+            Image& image_to_modify,
+            const Image& airbrush_image,
+            int center_x,
+            int center_y
             )
 
     You will modify a subset of the pixels of the output parameter
@@ -234,14 +243,14 @@ You will return the rectangle corresponding to the pixels of `image_to_modify`
 that you actually modified.
 
     * **(25 of the 50 points)** Correct iteration bounds. Note that you must
-return the iteration bounds related to `image_to_modify` as a `QRect`.
+return the iteration bounds related to `image_to_modify` as a `Rect`.
 This is so that the GUI knows which part of the window to redraw.
 
     * **(25 of the 50 points)** Compositing the corresponding RGBA pixel of
 `airbrush_image` onto the RGB pixel of `image_to_modify`. To help you
 with this, I have created a helper function signature (you fill it in):
 
-            QRgb composite( const QRgb& foreground, const QRgb& background );
+            ColorRGB8 composite( const ColorRGB8& foreground, const ColorRGB8& background );
 
         Recall from class or the textbook or Wikipedia that the formula to
 composite a foreground color "over" a background color is:
@@ -271,64 +280,38 @@ point numbers. Floating point operations have traditionally been slower than int
 
         to accomplish this.
 
-Qt functions you need for this assignment
+Support code functions you need for this assignment
 -----------------------------------------
 
-**QRect.** The constructor of `QRect` is `QRect( x, y, width, height )`.
+**Rect.** The constructor of `Rect` is `Rect( x, y, width, height )`.
 
-**QPoint.** The methods `p.x()` and `p.y()` return the x and y components of
-a `QPoint p`.
+**Image:**
 
-**QImage:**
-
-* `image.pixel(x,y)` returns the `QRgb` color for pixel x,y of a `QImage image`.
-* `image.setPixel(x,y,c)` sets the pixel to a `QRgb` color `c`.
+* `image.pixel(x,y)` returns the `ColorRGB8` color for pixel x,y of an `Image image`.
+* `image.pixel(x,y) = c` sets the pixel to a `ColorRGB8` color `c`.
 
 * `image.width()` and `image.height()` return the width and height of the
 image.
 
-* (Optional) `image.scanLine(y)` returns a pointer to the array of `QRgb` pixel data for
+* (Optional) `image.scanline(y)` returns a pointer to the array of `ColorRGB8` pixel data for
 row y. You do not need to do this but may wish to get closer to the metal for
 performance (avoiding function calls) or the experience. If you wish to attempt this,
-first make your code work using `.pixel()` and `.setPixel(x,y,c)`.
-The pointer returned by `image.scanLine(y)` points to the pixel (0,y).
-If you have a pointer to a pixel `QRgb* pix`, the next pixel in the row is `pix+1`
-and the next pixel in the column is `pix+image.bytesPerLine()/4`.
+first make your code work using `.pixel()`.
+The pointer returned by `image.scanline(y)` points to the pixel (0,y).
+If you have a pointer to a pixel `ColorRGB8* pix`, the next pixel in the row is `pix+1`
+and the next pixel in the column is `pix+image.width()`.
 
-`sqrt(x)`, `std::min(a,b)`, `std::max(a,b)`. These are not Qt functions.
-They are part of C's `math.h` and C++'s <algorithm>. Nevertheless, you
-will find them useful. Note that `std::min` and `std::max` require both
+`sqrt(x)`, `std::min(a,b)`, `std::max(a,b)`. These are part of C's `math.h`
+and C++'s <algorithm>. You will find them useful.
+Note that `std::min` and `std::max` require both
 parameters to have the exact same type. If not, you will get a very long
 compiler error since they are generic functions written using C++
 templates.
 
-**QRgb.** To get the red, green, blue, and alpha components of a QRgb color `c`
-as 8-bit values, use `qRed(c)`, `qGreen(c)`, `qBlue(c)`, and `qAlpha(c)`. To
-create an RGB `QRgb` color, use `qRgb( red, green, blue )` with 8-bit
-parameters. To create an RGBA `QRgb` color, use `qRgba( red, green, blue, alpha )`
-with 8-bit parameters. Note that `QRgb` is not a class or a struct. It is a
-`typedef` for an `unsigned int`, and those functions are just getting and
-setting the appropriate bytes. The header `qrgb.h` is very short and readable.
-Here is most of it:
-
-```c++
-typedef unsigned int QRgb;                        // RGB triplet
-
-inline int qRed(QRgb rgb)                // get red part of RGB
-{ return ((rgb >> 16) & 0xff); }
-
-inline int qGreen(QRgb rgb)                // get green part of RGB
-{ return ((rgb >> 8) & 0xff); }
-
-inline int qBlue(QRgb rgb)                // get blue part of RGB
-{ return (rgb & 0xff); }
-
-inline int qAlpha(QRgb rgb)                // get alpha part of RGBA
-{ return rgb >> 24; }
-
-inline QRgb qRgb(int r, int g, int b)// set RGB value
-{ return (0xffu << 24) | ((r & 0xffu) << 16) | ((g & 0xffu) << 8) | (b & 0xffu); }
-
-inline QRgb qRgba(int r, int g, int b, int a)// set RGBA value
-{ return ((a & 0xffu) << 24) | ((r & 0xffu) << 16) | ((g & 0xffu) << 8) | (b & 0xffu); }
-```
+**ColorRGB8** To get the red, green, blue, and alpha components of a `ColorRGB8` color `c`
+as 8-bit values, use `c.r`, `c.g`, `c.b`, and `c.a`. To
+create an RGB `ColorRGB8` color, use `ColorRGB8( red, green, blue )` with 8-bit
+parameters. To create an RGBA `ColorRGB8` color, use `ColorRGB8( red, green, blue, alpha )`
+with 8-bit parameters. Note that `ColorRGB8` is a 4-byte struct; some packages
+instead use a `typedef` for an `unsigned int` and then perform bitwise manipulation
+to store the appropriate bytes.

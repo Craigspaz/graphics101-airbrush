@@ -6,41 +6,27 @@
 #include <QPainter>
 #include <QMouseEvent>
 
+using graphics101::Image;
+using graphics101::ColorRGBA8;
+
 namespace
 {
-QImage resized( const QImage& img, const QSize& size )
+QImage QImageFromImage( const Image& image )
 {
-    // We have nothing to do.
-    // UPDATE: This function does a couple of other useful things,
-    //         like format conversion and compositing with white.
-    //         Therefore, always run it.
-    // if( img.size() == size ) return img;
-
-    // Create a blank, white image with the desired size.
-    // Preserving the format is dangerous, because
-    // the default constructor sets a weird format (maybe QImage::Format_Invalid).
-    // QImage newimg( size, img.format() );
-    QImage newimg( size, QImage::Format_RGB32 );
-    newimg.fill( qRgb(255,255,255) );
-
-    // Create a context around the new image and draw the old image into it.
-    QPainter painter(&newimg);
-    painter.drawImage( QPoint(0,0), img );
-    return newimg;
+    return QImage( reinterpret_cast< const uchar* >( image.data() ), image.width(), image.height(), QImage::Format_RGBA8888 );
 }
-
 }
 
 CanvasWidget::CanvasWidget(QWidget *parent) : QWidget(parent)
 {
     modified = false;
 
-    image = QImage( 0, 0, QImage::Format_RGB32 );
+    image = Image();
 
     radius = 25;
     color = Qt::blue;
     color.setAlpha(64);
-    shape = airbrush::Quadratic;
+    shape = graphics101::Quadratic;
     flowRate = 66;
     flowRateTimerID = 0;
     painting = false;
@@ -50,7 +36,7 @@ CanvasWidget::CanvasWidget(QWidget *parent) : QWidget(parent)
 
 void CanvasWidget::clear()
 {
-    image.fill( qRgb(255,255,255) );
+    image.fill( ColorRGBA8(255,255,255) );
     modified = false;
     update();
 }
@@ -59,8 +45,8 @@ bool CanvasWidget::saveToPath( const QString& path )
 {
     // Since we don't shrink the canvas when the user resizes the canvas smaller,
     // we might have extra canvas. Save only the visible part.
-    const QImage visible = resized( image, size() );
-    const bool success = visible.save( path );
+    const Image visible = Image( image ).resize( size().width(), size().height() );
+    const bool success = visible.save( path.toStdString() );
     // After successfully saving, we no longer have unsaved changes.
     if( success ) modified = false;
     return success;
@@ -68,21 +54,28 @@ bool CanvasWidget::saveToPath( const QString& path )
 
 bool CanvasWidget::loadFromPath( const QString& path )
 {
-    QImage loaded;
-    const bool success = loaded.load( path );
+    Image loaded;
+    const bool success = loaded.load( path.toStdString() );
     
     // After successfully loading, we no longer have unsaved changes.
     if( success ) {
         modified = false;
         
         // Always resize the loaded image to the current view size if bigger.
-        image = resized( loaded, loaded.size().expandedTo( size() ) );
+        image = loaded.resize(
+            std::max( loaded.width(), size().width() ),
+            std::max( loaded.height(), size().height() )
+            );
         
-        image = image.convertToFormat( QImage::Format_RGB32 );
         update();
     }
     
     return success;
+}
+
+QImage CanvasWidget::getBrushImage() const
+{
+    return QImageFromImage( airbrush_image );
 }
 
 void CanvasWidget::setRadius(int r)
@@ -101,7 +94,7 @@ void CanvasWidget::setFlowRate(int f)
 }
 void CanvasWidget::setShape(const QString& str)
 {
-    shape = airbrush::AirBrushShapeFromQString( str );
+    shape = graphics101::AirBrushShapeFromString( str.toStdString() );
 
     updateBrushImage();
 }
@@ -144,7 +137,7 @@ void CanvasWidget::paintEvent(QPaintEvent *event)
     QPainter painter( this );
     // Redraw the "dirty" region.
     const QRect dirty = event->rect();
-    painter.drawImage( dirty, image, dirty );
+    painter.drawImage( dirty, QImageFromImage( image ), dirty );
 }
 void CanvasWidget::resizeEvent(QResizeEvent *event)
 {
@@ -156,7 +149,8 @@ void CanvasWidget::resizeEvent(QResizeEvent *event)
                     std::max( width() + CHUNK, image.width() ),
                     std::max( height() + CHUNK, image.height() )
                     );
-        image = resized( image, newsize );
+        // image = resized( image, newsize );
+        image.resize( newsize.width(), newsize.height() );
         // Update to repaint everything.
         update();
     }
@@ -171,16 +165,17 @@ void CanvasWidget::timerEvent(QTimerEvent *event)
 void CanvasWidget::brushAt(const QPoint &point)
 {
     // Step 1. Modify `image` pixels.
-    const QRect dirty = airbrush::paint_at( image, airbrush_image, point );
+    const graphics101::Rect dirty = graphics101::paint_at( image, airbrush_image, point.x(), point.y() );
 
     // Step 2. Call update() to mark the painted part of the screen as dirty.
     //         Pass a tighter rectangle for better performance.
-    update( dirty );
+    update( QRect( dirty.x, dirty.y, dirty.width, dirty.height ) );
     modified = true;
 }
 
 void CanvasWidget::updateBrushImage()
 {
-    airbrush::create_airbrush( airbrush_image, shape, radius, color.rgba() );
-    emit brushChanged( airbrush_image );
+    const ColorRGBA8 c( color.red(), color.green(), color.blue(), color.alpha() );
+    graphics101::create_airbrush( airbrush_image, shape, radius, c );
+    emit brushChanged( QImageFromImage( airbrush_image ) );
 }

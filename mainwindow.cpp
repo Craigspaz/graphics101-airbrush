@@ -71,7 +71,7 @@ bool MainWindow::saveAs()
 
 void MainWindow::chooseColor()
 {
-    QColor newColor = QColorDialog::getColor( canvas->getColor(), 0, "Chose Color...", QColorDialog::ShowAlphaChannel );
+    QColor newColor = QColorDialog::getColor( canvas->getColor(), 0, "Choose Color...", QColorDialog::ShowAlphaChannel );
     if( !newColor.isValid() ) return;
 
     canvas->setColor( newColor );

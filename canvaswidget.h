@@ -2,8 +2,9 @@
 #define CANVASWIDGET_H
 
 #include <QWidget>
-#include <QImage>
-#include <airbrush.h>
+class QImage;
+#include "airbrush.h"
+#include "image.h"
 
 class CanvasWidget : public QWidget
 {
@@ -16,7 +17,7 @@ public:
 
     bool isModified() const { return modified; }
     QColor getColor() const { return color; }
-    const QImage& getBrushImage() const { return airbrush_image; }
+    QImage getBrushImage() const;
 
 signals:
     void brushChanged( const QImage& brushImage ) const;
@@ -42,13 +43,13 @@ private:
 
     bool modified;
 
-    QImage image;
-    QImage airbrush_image;
+    graphics101::Image image;
+    graphics101::Image airbrush_image;
 
     int radius;
     QColor color;
     int flowRate;
-    airbrush::AirBrushShape shape;
+    graphics101::AirBrushShape shape;
 
     int flowRateTimerID;
     bool painting;

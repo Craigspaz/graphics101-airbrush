@@ -9,12 +9,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     canvaswidget.cpp \
-    airbrush.cpp
+    airbrush.cpp \
+    image.cpp
 
 HEADERS += \
     mainwindow.h \
     canvaswidget.h \
-    airbrush.h
+    airbrush.h \
+    image.h
 
 FORMS += \
     mainwindow.ui

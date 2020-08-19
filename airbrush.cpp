@@ -8,6 +8,9 @@
 namespace {
     typedef double real;
     
+    using graphics101::AirBrushShape;
+    using graphics101::ColorRGBA8;
+    
     /*
      * Falloff functions take a parameter `t`, guaranteed to be greater than or equal to zero,
      * and return a number between 0 and 1.
@@ -49,9 +52,9 @@ namespace {
         return 1.;
     }
 
-    real falloff( airbrush::AirBrushShape shape, real t )
+    real falloff( AirBrushShape shape, real t )
     {
-        using namespace airbrush;
+        using namespace graphics101;
 
         switch( shape ) {
             case Constant: return falloff_constant(t);
@@ -71,10 +74,10 @@ namespace {
         return 0;
     }
 
-    inline QRgb composite( const QRgb& foreground, const QRgb& background ) {
+    inline ColorRGBA8 composite( const ColorRGBA8& foreground, const ColorRGBA8& background ) {
         // Your code goes here.
 
-        return qRgb(
+        return ColorRGBA8(
                     // red
                     0,
                     // green
@@ -85,20 +88,20 @@ namespace {
     }
 }
 
-namespace airbrush
+namespace graphics101
 {
-    void create_airbrush( QImage& airbrush_out, AirBrushShape shape, int radius, QRgb color )
+    void create_airbrush( Image& airbrush_out, AirBrushShape shape, int radius, ColorRGBA8 color )
     {
         assert( radius >= 0 );
 
         // Step 1. Allocate space for the mask. Make a color image with 8 bits for red, green, blue, and alpha.
-        const QSize size( 1+2*radius, 1+2*radius );
-        if( airbrush_out.size() != size ) {
-            airbrush_out = QImage(size, QImage::Format_ARGB32);
+        const int size = 1+2*radius;
+        if( airbrush_out.width() != size || airbrush_out.height() != size ) {
+            airbrush_out.resize( size, size );
         }
 
         // Step 2. Set the RGB contents of the image to the `color`'s RGB values.
-        //         Set the alpha channel of the image to `qAlpha(color)` scaled by the appropriate falloff.
+        //         Set the alpha channel of the image to `color.alpha` scaled by the appropriate falloff.
 
         // Your code goes here.
 
@@ -110,9 +113,12 @@ namespace airbrush
         // and choose "Show Package Contents" to see inside.
     }
 
-    QRect paint_at( QImage& image_to_modify,
-                    const QImage& airbrush_image,
-                    const QPoint& center ) {
+    Rect paint_at( Image& image_to_modify,
+                    const Image& airbrush_image,
+                    int center_x,
+                    int center_y
+                    )
+    {
 
         // Your code goes here.
 
@@ -128,11 +134,11 @@ namespace airbrush
         // Step 2. Modify `image_to_modify` pixels by compositing `airbrush_image`.
 
         // Step 3. Return the rectange dimensions of the part of `image_to_modify` that was modified
-        //         as a QRect.
-        return QRect( 0, 0, 1, 1 );
+        //         as a Rect.
+        return Rect( 0, 0, 1, 1 );
     }
 
-    QString QStringFromAirBrushShape( AirBrushShape shape ) {
+    std::string StringFromAirBrushShape( AirBrushShape shape ) {
         switch( shape ) {
             case Constant: return "Constant";
             case Linear: return "Linear";
@@ -144,7 +150,7 @@ namespace airbrush
         }
     }
 
-    AirBrushShape AirBrushShapeFromQString( const QString& str ) {
+    AirBrushShape AirBrushShapeFromString( const std::string& str ) {
         if( str == "Constant" ) return Constant;
         else if( str == "Linear" ) return Linear;
         else if( str == "Quadratic" ) return Quadratic;
