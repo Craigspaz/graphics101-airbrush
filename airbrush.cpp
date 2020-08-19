@@ -101,7 +101,7 @@ namespace graphics101
         }
 
         // Step 2. Set the RGB contents of the image to the `color`'s RGB values.
-        //         Set the alpha channel of the image to `color.alpha` scaled by the appropriate falloff.
+        //         Set the alpha channel of the image to `color.a` scaled by the appropriate falloff.
 
         // Your code goes here.
 
