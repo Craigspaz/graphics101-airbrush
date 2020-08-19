@@ -37,6 +37,8 @@ public:
 	
 	// Assignment constructor
 	Image& operator=( const Image& );
+	// Move operator
+	Image& operator=( Image&& rhs );
 	
 	// Returns true if the images are the same size and have the same data (for r,g,b,a).
 	bool same( const Image& rhs ) const;

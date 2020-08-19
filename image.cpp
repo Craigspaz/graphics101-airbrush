@@ -8,9 +8,11 @@ GitHub: https://github.com/yig/yimg
 
 #include <cassert>
 #include <cstring>
+#include <stdlib.h> // malloc, free, realloc
 
 #include <string>
 #include <algorithm> // tolower, copy
+#include <utility> // move
 
 
 // For load()
@@ -52,9 +54,18 @@ Image::Image( const Image& rhs )
 	*this = rhs;
 }
 
-Image::Image( int width, int height )
+Image::Image( int width_, int height_ )
+    : m_width( width_ ), m_height( height_ )
 {
-    resize( width, height );
+    // Dimensions must be non-negative.
+    assert( width_ >= 0 && height_ >= 0 );
+    // Dimensions must be both 0 or both non-zero.
+    assert( width_ > 0 == height_ > 0 );
+    
+    // Stop with m_data = nullptr (set by the default initializer in the header).
+    if( width_ == 0 || height_ == 0 ) return;
+    
+    m_data = reinterpret_cast<ColorRGBA8*>( malloc( width_ * height_ * sizeof(ColorRGBA8) ) );
 }
 
 Image::Image( const ColorRGBA8* data, int width, int height )
@@ -66,8 +77,8 @@ Image::Image( const ColorRGBA8* data, int width, int height )
 Image::Image( const ColorRGBA8* data, int width, int height, int pixels_per_row )
     : Image::Image( width, height )
 {
-    for( int i = 0; i < width; ++i ) {
-        memcpy( m_data + i*width, data + i*pixels_per_row, width * sizeof(ColorRGBA8) );
+    for( int j = 0; j < height; ++j ) {
+        memcpy( scanline(j), data + j*pixels_per_row, width * sizeof(ColorRGBA8) );
     }
 }
 
@@ -95,6 +106,25 @@ Image::operator=( const Image& rhs )
 	memcpy( m_data, rhs.m_data, m_width * m_height * sizeof(ColorRGBA8) );
 	
 	return *this;
+}
+Image&
+Image::operator=( Image&& rhs )
+{
+    // The move operator takes the data from rhs, so long as they aren't the same object.
+    if( this != &rhs ) {
+        // Erase the current image.
+        clear();
+        
+        // Take data from `rhs`.
+        m_width = rhs.m_width;
+        m_height = rhs.m_height;
+        m_data = rhs.m_data;
+        
+        // Set `rhs` to a valid state without its data.
+        rhs.m_width = rhs.m_height = 0;
+        rhs.m_data = nullptr;
+    }
+    return *this;
 }
 
 Image::~Image() { clear(); }
@@ -155,88 +185,43 @@ Image& Image::fill( ColorRGBA8 color )
 
 Image& Image::resize( int width_, int height_, ColorRGBA8 clear_ )
 {
-    // New dimensions must be non-negative.
-    assert( width_ >= 0 && height_ >= 0 );
-    // New dimensions must be both 0 or both non-zero.
-    assert( width_ > 0 == height_ > 0 );
+    // If new dimensions are the same, do nothing.
+	if( m_width == width_ && m_height == height_ ) return *this;
     
-    // If they are both zero, clear the image and return.
-    if( 0 == width_ || 0 == height_ )
-    {
-        assert( width_ > 0 == height_ > 0 );
-        
-        clear();
-        return *this;
-    }
-    
-    // If they are the same, do nothing.
-	if( m_width == width_ && m_height == height_ )
+    // Create a resized image.
+    Image resized( width_, height_ );
+    // Fill it with the clear color.
+    resized.fill( clear_ );
+    // If the current image isn't empty, copy what we can.
+    if( m_data )
 	{
-		assert( m_data );
-		return *this;
-	}
-	
-	ColorRGBA8* new_data = reinterpret_cast<ColorRGBA8*>( malloc( width_ * height_ * sizeof(ColorRGBA8) ) );
-	// Fill with `clear_`.
-	for( int i = 0; i < width_*height_; ++i ) new_data[i] = clear_;
-	
-	if( m_data )
-	{
-		int min_width = std::min( m_width, width_ );
-		int min_height = std::min( m_height, height_ );
-		
+		const int min_width = std::min( m_width, width_ );
+		const int min_height = std::min( m_height, height_ );
 		for( int j = 0; j < min_height; ++j ) {
-			memcpy( new_data + j*width_, m_data + j*m_width, min_width * sizeof(ColorRGBA8) );
+			memcpy( resized.scanline(j), scanline(j), min_width * sizeof(ColorRGBA8) );
 		}
-		
-		free( m_data );
 	}
-	
-	m_width = width_;
-	m_height = height_;
-	m_data = new_data;
-	
+	// Set the current image to the new resized image (by moving its data over).
+	*this = std::move(resized);
 	return *this;
 }
 
 
 Image& Image::rescale( int width_, int height_ )
 {
-    // New dimensions must be non-negative.
-    assert( width_ >= 0 && height_ >= 0 );
-    // New dimensions must be both 0 or both non-zero.
-    assert( width_ > 0 == height_ > 0 );
+    // If new dimensions are the same, do nothing.
+	if( m_width == width_ && m_height == height_ ) return *this;
     
-    // If they are both zero, clear the image and return.
-    if( 0 == width_ || 0 == height_ )
-    {
-        assert( width_ > 0 == height_ > 0 );
-        
-        clear();
+    Image rescaled( width_, height_ );
+    
+    // If there is currently no data, set the output to transparent black and return.
+    if( empty() ) {
+        rescaled.fill( ColorRGBA8(0,0,0,0) );
+        // Set the current image to the new image (by moving its data over).
+        *this = std::move(rescaled);
         return *this;
     }
     
-    // If they are the same, do nothing.
-	if( m_width == width_ && m_height == height_ )
-	{
-		assert( m_data );
-		return *this;
-	}
-	
-	ColorRGBA8* new_data = reinterpret_cast<ColorRGBA8*>( malloc( width_ * height_ * sizeof(ColorRGBA8) ) );
-	
-	// If there is currently no data, set the output to transparent black and return.
-	if( !m_data )
-	{
-	    assert( 0 == m_width && 0 == m_height );
-	    
-	    memset( new_data, 0, width_ * height_ * sizeof(ColorRGBA8) );
-	    m_width = width_;
-        m_height = height_;
-        m_data = new_data;
-        return *this;
-	}
-	
 	// If we are here, we have data.
 	assert( m_data );
 	assert( m_width > 0 && m_height > 0 );
@@ -244,18 +229,14 @@ Image& Image::rescale( int width_, int height_ )
 	// Call stbir_resize_uint8()
 	const bool success = stbir_resize_uint8(
 	    reinterpret_cast< const unsigned char* >( m_data ), m_width, m_height, 0,
-	    reinterpret_cast< unsigned char* >( new_data ), width_, height_, 0,
+	    reinterpret_cast< unsigned char* >( rescaled.data() ), width_, height_, 0,
 	    4 // number of channels
 	    );
 	assert( success );
 	
-	// Set the output.
-	free( m_data );
-	m_data = new_data;
-	m_width = width_;
-	m_height = height_;
-	
-	return *this;
+	// Set the current image to the new image (by moving its data over).
+    *this = std::move(rescaled);
+    return *this;
 }
 
 Image& Image::flip()
