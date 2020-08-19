@@ -153,7 +153,7 @@ Image& Image::fill( ColorRGBA8 color )
     return *this;
 }
 
-Image& Image::resize( int width_, int height_ )
+Image& Image::resize( int width_, int height_, ColorRGBA8 clear_ )
 {
     // New dimensions must be non-negative.
     assert( width_ >= 0 && height_ >= 0 );
@@ -177,7 +177,8 @@ Image& Image::resize( int width_, int height_ )
 	}
 	
 	ColorRGBA8* new_data = reinterpret_cast<ColorRGBA8*>( malloc( width_ * height_ * sizeof(ColorRGBA8) ) );
-	memset( new_data, 0, width_ * height_ * sizeof(ColorRGBA8) );
+	// Fill with `clear_`.
+	for( int i = 0; i < width_*height_; ++i ) new_data[i] = clear_;
 	
 	if( m_data )
 	{

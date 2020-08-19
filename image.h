@@ -48,9 +48,9 @@ public:
 	bool load( const std::string& fname );
 	
 	// NOTE: Methods which modify the image return a reference to the image itself so
-	//       you can chain methods, as in: img.resize( 100, 100 ).clear().fill( color );
+	//       you can chain methods, as in: img.clear().resize( 100, 100 ).fill( color ).flip();
 	
-	// Sets the width and height to 0 and data to NULL.
+	// Sets the width and height to 0 and data to nullptr.
 	Image& clear();
 	// Fills the image with the specified color.
 	Image& fill( ColorRGBA8 color );
@@ -72,8 +72,8 @@ public:
 	
 	// Resizes the image as in a window or canvas resize.
 	// Preserves as much as possible the old image (in the upper left).
-    // Newly visible pixels are set to transparent black.
-	Image& resize( int width, int height );
+    // Newly visible pixels are set to `clear`, which defaults to transparent black.
+	Image& resize( int width, int height, ColorRGBA8 clear = ColorRGBA8(0,0,0,0) );
 	// Resizes the image by scaling it to fit in the new dimensions.
 	Image& rescale( int width, int height );
 	

@@ -149,8 +149,8 @@ void CanvasWidget::resizeEvent(QResizeEvent *event)
                     std::max( width() + CHUNK, image.width() ),
                     std::max( height() + CHUNK, image.height() )
                     );
-        // image = resized( image, newsize );
-        image.resize( newsize.width(), newsize.height() );
+        // Resize and fill newly visible areas with white.
+        image.resize( newsize.width(), newsize.height(), ColorRGBA8( 255,255,255,255 ) );
         // Update to repaint everything.
         update();
     }
