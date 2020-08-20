@@ -1,77 +1,6 @@
 Computer Graphics - Homework Assignment 1 - Airbrush
 ====================================================
 
-Goals:
-------
-
-* Understand raster images and simple compositing.
-
-* Become familiar with C++.
-
-* Successfully install a C++ development environment and the Qt libraries.
-
-Getting Started & Handing In:
------------------------------
-
-* Download or clone this code repository. Don't fork it on GitHub, or else your code will be visible to everyone.
-
-* This assignment makes use of the cross-platform, open source Qt GUI framework.
-(At the time of writing, version 5.15 is the newest version. Any 5.x version should work.)
-Qt also has a nice integrated development environment (IDE) called Qt Creator.
-There are a few ways to get it:
-
-    * Qt's online installer. This annoyingly requires you to create an account, but is the easiest way to install a compiler on Windows. Install the open source version of the Qt environment: <https://www.qt.io/download-open-source>
-    This installer, by default, includes all versions of
-    Qt. This is unnecessary and takes a huge amount of space.
-    Install only the most recent version (e.g. Qt 5.15) and the Qt Creator IDE.
-    On Windows, also install the MingW compiler.
-
-<https://www.qt.io/offline-installers> has installers for 5.12 and Qt Creator. You will need to bring your own compiler. Mac: Go to the app store and install XCode.
-Windows: https://wiki.qt.io/MinGW
-
-Install the open source version
-of the Qt environment: <https://www.qt.io/download-open-source>
- This installer, by default, includes all versions of
-Qt. This is unnecessary and takes a huge amount of space.
-Install only the most recent version (e.g. Qt 5.15) and the Qt Creator IDE.
-On Windows, also install the MingW compiler.
-
-  * Mac users can alternatively install with [Homebrew](https://brew.sh/): `brew install qt` and `brew cask install qt-creator`.
-  * Ubuntu Linux users can alternatively install via `apt-get install qtbase5-dev qtcreator`.
-
-* Download the assignment. This will create a folder named `airbrush`. Open the
-file named `airbrush.pro`. This should launch the Qt Creator
-development environment (IDE).
-
-* Build and run the code. The code should compile and run, but clicking
-and dragging in the window won't have any effect.
-
-* Add your code to `airbrush.cpp`.
-
-    * Your code will be written in C++, but nothing fancy. It will look like a
-    mix of C and Java.
-    * The framework and libraries provide all the support code that you need. You will need to understand a few functions, described below. Feel free to enhance the interface if you so desire.
-    * The framework code is written using the open source Qt GUI framework. Your code is isolated from this code.
-
-* Build and run and test that it is working correctly. Qt Creator has a
-great debugger.
-
-* Create a painting and save it into the folder. You are encouraged but not required to share it on Piazza, too.
-
-* Create a file named `Notes.txt` in the folder. Describe any known issues or extra features. Name people in the class who deserve a star for
-helping you (not by giving your their code!).
-
-* When done, zip your entire `airbrush` directory (including your
-`Notes.txt` file and your painting) as `hw01_lastname_firstname.zip` and
-upload your solution to Blackboard before the deadline.
-
-* **THIS IS AN INDIVIDUAL, NOT A GROUP ASSIGNMENT. That means all code
-written for this assignment should be original! Although you are
-permitted to consult with each other while working on this assignment,
-code that is substantially the same will be considered cheating.** In your
-`Notes.txt`, please note who deserves a star (who helped you with the
-assignment).
-
 Overview:
 ---------
 
@@ -86,6 +15,53 @@ Although it looks fancy, it's pretty simple if we break it down into two
 parts: (1) creating a translucent RGBA image for a spray of the airbrush
 and (2) depositing the paint by compositing the airbrush RGBA image onto
 the background image centered at the mouse location.
+
+
+Goals:
+------
+
+* Understand raster images and simple compositing.
+
+* Become familiar with C++.
+
+* Successfully install a C++ development environment and the Qt libraries.
+
+
+Getting Started & Handing In:
+-----------------------------
+
+* Download or clone this code repository. Don't fork it on GitHub, or else your code will be visible to everyone.
+
+* Follow the instructions to install a working development environment: <https://github.com/yig/graphics101>
+
+* Build and run the code. The code should compile and run, but clicking
+and dragging in the window won't have any effect.
+
+* Add your code to `airbrush.cpp`.
+
+    * Your code will be written in C++, but nothing fancy. It will look like a
+    mix of C and Java.
+    * The framework and libraries provide all the support code that you need. You will need to understand a few functions, described below.
+    * The GUI code is written using the open source Qt GUI framework. Your code is isolated from this code. Feel free to enhance the interface if you so desire.
+
+* Build and run and test that it is working correctly. Qt Creator has a
+great debugger interface.
+
+* Create a painting and save it into the folder. You are encouraged but not required to share it with everyone on Piazza, too. You are also encouraged to share blooper images you create while implementing the assignment.
+
+* Create a file named `Notes.txt` in the folder. Describe any known issues or extra features. Name people in the class who deserve a star for
+helping you (not by giving your their code!).
+
+* When done, zip your entire `airbrush` directory (including your
+`Notes.txt` file and your painting) as `hw01_lastname_firstname.zip` and
+upload your solution to Blackboard before the deadline.
+
+* **THIS IS AN INDIVIDUAL, NOT A GROUP ASSIGNMENT. That means all code
+written for this assignment should be original! Although you are
+permitted to consult with each other while working on this assignment,
+code that is substantially the same will be considered cheating.** In your
+`Notes.txt`, please note who deserves a star (who helped you with the
+assignment).
 
 Rubric:
 -------
@@ -234,7 +210,7 @@ function signature for this is:
     You will modify a subset of the pixels of the output parameter
 `image_to_modify` by compositing the pixels of `airbrush_image` over
 them. `airbrush_image` should be composited with its center at the
-`center.x()`, `center.y()` pixel of `image_to_modify`. Note that depending
+`center_x`, `center_y` pixel of `image_to_modify`. Note that depending
 on the size of `airbrush_image` and the location of its center, only part
 of it will fit on `image_to_modify`. Figuring out which pixels of
 `airbrush_image` and `image_to_modify` to iterate over—without
@@ -302,7 +278,7 @@ If you have a pointer to a pixel `ColorRGB8* pix`, the next pixel in the row is 
 and the next pixel in the column is `pix+image.width()`.
 
 `sqrt(x)`, `std::min(a,b)`, `std::max(a,b)`. These are part of C's `math.h`
-and C++'s <algorithm>. You will find them useful.
+and C++'s `<algorithm>`. You will find them useful.
 Note that `std::min` and `std::max` require both
 parameters to have the exact same type. If not, you will get a very long
 compiler error since they are generic functions written using C++
