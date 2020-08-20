@@ -101,13 +101,9 @@ for pixels whose distance is radius or greater from the center. The
 brushes above differ only in how the opacity falls off. To compute the
 opacity for a pixel, let's set a variable *t* to the distance from the
 center pixel as a fraction of the radius:
-
-    *t* = sqrt( ( x - x₀)² + ( y - y₀ )² ) )/radius
     
-    ![](docs/images/t.png)
+    ![*t* = sqrt( ( x - x₀)² + ( y - y₀ )² ) )/radius](docs/images/t.png)
     
-    $t = \frac{ \sqrt{ ( x - x_0 )^2 + ( y - y_0 )^2 } }{ \textit{radius} }$
-
     Then all we need is a *falloff* function of *t* to create interesting
 circular shapes. With such a function, each airbrush image pixel's
 alpha value is then conveniently expressed as the color's alpha * *f(t)*.
@@ -142,56 +138,18 @@ shapes.
         * **(5 of the 25 points)** A constant function `falloff_constant()`. It just
 makes a circle. (These equations are shown 3 ways because GitHub's Markdown processing doesn't handle equations well.)
 
-            ![constant function](docs/images/constant.png)
-
-            $$
-            f_\textit{constant}(t) =
-            \begin{cases}
-            1 & \text{if} \quad t < 1 \\
-            0 & \text{otherwise}
-            \end{cases}
-            $$
-
-                falloff_constant(t) =
-                    { 1 if t < 1
-                    { 0 otherwise
+            ![falloff_constant(t) = { 1 if t < 1 { 0 otherwise](docs/images/constant.png)
 
         * **(10 of the 25 points)** A linear function `falloff_linear()`.
 It makes a "cone".
 
-            ![linear function](docs/images/linear.png)
-
-            $$
-            f_\textit{linear}(t) =
-            \begin{cases}
-            1-t & \text{if} \quad t < 1 \\
-            0 & \text{otherwise}
-            \end{cases}
-            $$
-
-                falloff_linear(t) =
-                    { 1-t if t < 1
-                    { 0   otherwise
+            ![falloff_linear(t) = { 1-t if t < 1 { 0   otherwise](docs/images/linear.png)
 
         * **(10 of the 25 points)** A quadratic function `falloff_quadratic()` that
 looks like a Gaussian (very aesthetically pleasing) but without an
 infinite tail.
 
-            ![quadratic function](docs/images/quadratic.png)
-
-            $$
-            f_\textit{quadratic}(t) =
-            \begin{cases}
-            1-3t^2 & \text{if\ \ \ } t < \frac{1}{3} \\
-            1.5t^2 - 3t + 1.5 & \text{if\ \ \ } \frac{1}{3} \leq t < 1 \\
-            0 & \text{otherwise}
-            \end{cases}
-            $$
-
-                falloff_quadratic(t) =
-                    { 1-3t^2            if t < 1/3
-                    { 1.5t^2 - 3t + 1.5 if 1/3 <= t < 1
-                    { 0                 otherwise
+            ![falloff_quadratic(t) = { 1-3t^2            if t < 1/3 { 1.5t^2 - 3t + 1.5 if 1/3 <= t < 1 { 0                 otherwise](docs/images/quadratic.png)
 
         * **(up to 5 bonus points)** A special function `falloff_special()` that does
 anything you want!
