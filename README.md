@@ -235,7 +235,8 @@ The pointer returned by `image.scanline(y)` points to the pixel (0,y).
 If you have a pointer to a pixel `ColorRGB8* pix`, the next pixel in the row is `pix+1`
 and the next pixel in the column is `pix+image.width()`.
 
-`sqrt(x)`, `std::min(a,b)`, `std::max(a,b)`. These are part of C's `math.h`
+`sqrt(x)`, `std::min(a,b)`, `std::max(a,b)`, `lround(x)`. These are part of C's `math.h`
+(in C++ included as `<cmath>`)
 and C++'s `<algorithm>`. You will find them useful.
 Note that `std::min` and `std::max` require both
 parameters to have the exact same type. If not, you will get a very long

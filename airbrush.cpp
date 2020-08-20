@@ -1,7 +1,7 @@
 #include "airbrush.h"
 
 #include <cassert>
-#include <cmath> // sqrt()
+#include <cmath> // sqrt(), lround()
 #include <algorithm> // std::min(), std::max()
 
 // Put helper functions needed by this file only here in an anonymous namespace.
