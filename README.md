@@ -243,10 +243,11 @@ parameters to have the exact same type. If not, you will get a very long
 compiler error since they are generic functions written using C++
 templates.
 
-**ColorRGB8** To get the red, green, blue, and alpha components of a `ColorRGB8` color `c`
-as 8-bit values, use `c.r`, `c.g`, `c.b`, and `c.a`. To
-create an RGB `ColorRGB8` color, use `ColorRGB8( red, green, blue )` with 8-bit
-parameters. To create an RGBA `ColorRGB8` color, use `ColorRGB8( red, green, blue, alpha )`
-with 8-bit parameters. Note that `ColorRGB8` is a 4-byte struct; some packages
-instead use a `typedef` for an `unsigned int` and then perform bitwise manipulation
-to store the appropriate bytes.
+**ColorRGBA8** To get the red, green, blue, and alpha components of a
+`ColorRGBA8` color `c` as 8-bit values, use `c.r`, `c.g`, `c.b`, and `c.a`. To
+create an RGB `ColorRGBA8` color, use `ColorRGBA8( red, green, blue )` with
+8-bit parameters. Each of the parameters should be an integer number in the
+range [0,255], inclusive. To create an RGBA `ColorRGBA8` color, use `ColorRGBA8(
+red, green, blue, alpha )` with 8-bit parameters. Note that `ColorRGBA8` is a
+4-byte struct; some packages instead use a `typedef` for an `unsigned int` and
+then perform bitwise manipulation to store the appropriate bytes.
