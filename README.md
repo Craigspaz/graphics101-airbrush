@@ -59,9 +59,7 @@ upload your solution to Blackboard before the deadline.
 * **THIS IS AN INDIVIDUAL, NOT A GROUP ASSIGNMENT. That means all code
 written for this assignment should be original! Although you are
 permitted to consult with each other while working on this assignment,
-code that is substantially the same will be considered cheating.** In your
-`Notes.txt`, please note who deserves a star (who helped you with the
-assignment).
+code that is substantially the same will be considered cheating.**
 
 Rubric:
 -------
