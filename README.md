@@ -27,6 +27,11 @@ Goals:
 * Successfully install a C++ development environment and the Qt libraries.
 
 
+Worksheet:
+-------
+
+Before you start programming, complete [this worksheet](docs/worksheet.pdf) with a friend.
+
 Getting Started & Handing In:
 -----------------------------
 
