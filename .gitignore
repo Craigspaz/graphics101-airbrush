@@ -1,7 +1,7 @@
-*.pro.user
-*~
 .DS_Store
 Thumbs.db
+
+*~
 
 # Common CMake directory names
 /build
@@ -10,3 +10,4 @@ Thumbs.db
 
 # Qt Creator creates this
 CMakeLists.txt.user
+*.pro.user
