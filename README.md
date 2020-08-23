@@ -31,6 +31,7 @@ Worksheet:
 -------
 
 Before you start programming, complete [this worksheet](docs/worksheet.pdf) with a friend.
+See Piazza for instructions on turning it in. Once you do, we will share the answers.
 
 Getting Started & Handing In:
 -----------------------------
