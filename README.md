@@ -120,7 +120,7 @@ function signature is:
 
             void create_airbrush(
                 Image& airbrush_out,
-                AirBrushShape shape, int radius, ColorRGB8 color
+                AirBrushShape shape, int radius, ColorRGBA8 color
                 )
 
         `Image` is a class that wraps an array of RGBA values with
@@ -188,7 +188,7 @@ This is so that the GUI knows which part of the window to redraw.
 `airbrush_image` onto the RGB pixel of `image_to_modify`. To help you
 with this, I have created a helper function signature (you fill it in):
 
-            ColorRGB8 composite( const ColorRGB8& foreground, const ColorRGB8& background );
+            ColorRGBA8 composite( const ColorRGBA8& foreground, const ColorRGBA8& background );
 
         Recall from class or the textbook or Wikipedia that the formula to
 composite a foreground color "over" a background color is:
@@ -225,18 +225,18 @@ Support code functions you need for this assignment
 
 **Image:**
 
-* `image.pixel(x,y)` returns the `ColorRGB8` color for pixel x,y of an `Image image`.
-* `image.pixel(x,y) = c` sets the pixel to a `ColorRGB8` color `c`.
+* `image.pixel(x,y)` returns the `ColorRGBA8` color for pixel x,y of an `Image image`.
+* `image.pixel(x,y) = c` sets the pixel to a `ColorRGBA8` color `c`.
 
 * `image.width()` and `image.height()` return the width and height of the
 image.
 
-* (Optional) `image.scanline(y)` returns a pointer to the array of `ColorRGB8` pixel data for
+* (Optional) `image.scanline(y)` returns a pointer to the array of `ColorRGBA8` pixel data for
 row y. You do not need to do this but may wish to get closer to the metal for
 performance (avoiding function calls) or the experience. If you wish to attempt this,
 first make your code work using `.pixel()`.
 The pointer returned by `image.scanline(y)` points to the pixel (0,y).
-If you have a pointer to a pixel `ColorRGB8* pix`, the next pixel in the row is `pix+1`
+If you have a pointer to a pixel `ColorRGBA8* pix`, the next pixel in the row is `pix+1`
 and the next pixel in the column is `pix+image.width()`.
 
 `sqrt(x)`, `std::min(a,b)`, `std::max(a,b)`, `lround(x)`. These are part of C's `math.h`
