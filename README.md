@@ -59,7 +59,8 @@ great debugger interface.
 helping you (not by giving your their code!).
 
 * When done, zip your entire `airbrush` directory (including your
-`Notes.txt` file and your painting) as `hw01_lastname_firstname.zip` and
+`Notes.txt` file and your painting but without your `build` directory)
+as `hw01_lastname_firstname.zip` and
 upload your solution to Blackboard before the deadline.
 
 * **THIS IS AN INDIVIDUAL, NOT A GROUP ASSIGNMENT. That means all code
