@@ -226,7 +226,7 @@ Support code functions you need for this assignment
 
 **Image:**
 
-* `image.pixel(x,y)` returns the `ColorRGBA8` color for pixel x,y of an `Image image`.
+* `image.pixel(x,y)` returns the `ColorRGBA8` color for pixel x,y of an `Image image`. The top left pixel is (0,0), not the bottom left.
 * `image.pixel(x,y) = c` sets the pixel to a `ColorRGBA8` color `c`.
 
 * `image.width()` and `image.height()` return the width and height of the
