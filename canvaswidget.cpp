@@ -64,7 +64,8 @@ bool CanvasWidget::loadFromPath( const QString& path )
         // Always resize the loaded image to the current view size if bigger.
         image = loaded.resize(
             std::max( loaded.width(), size().width() ),
-            std::max( loaded.height(), size().height() )
+            std::max( loaded.height(), size().height() ),
+            ColorRGBA8(255,255,255,255)
             );
         
         update();
