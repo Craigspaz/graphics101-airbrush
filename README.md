@@ -200,7 +200,8 @@ composite a foreground color "over" a background color is:
 and *B* is the background pixel. The formula is the same for the green
 and blue channels. In this formula, alpha values range from [0,1], not
 [0,255], so don't forget to convert. (Note that if the background
-image were also transparent, the formula would be slightly different.)
+image were also transparent, the formula would be slightly different.
+You are not expected to handle that case.)
 The formula `(1 - t)*a + t*b` appears so frequently in math and computer
 science that it has a shorthand name: lerp, short for linear
 interpolation. You may find it useful to fill in and use a helper
