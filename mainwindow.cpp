@@ -2,6 +2,10 @@
 #include "ui_mainwindow.h"
 #include "canvaswidget.h"
 
+#if FANCY_COLOR_PICKER
+#include "QtColorWidgets/color_dialog.hpp"
+#endif
+
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QColorDialog>
@@ -17,7 +21,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     canvas = ui->paintCanvas;
     // canvas->resize( 300, 300 );
-
+    
+#if FANCY_COLOR_PICKER
+    colorPicker = new color_widgets::ColorDialog(this);
+    colorPicker->setColorSpace( color_widgets::ColorWheel::ColorLCH );
+    colorPicker->setColor( canvas->getColor() );
+    colorPicker->setAlphaEnabled( true );
+    colorPicker->setButtonMode( color_widgets::ColorDialog::Close );
+    connect( colorPicker, &color_widgets::ColorDialog::colorChanged, canvas, &CanvasWidget::setColor );
+#endif
+    
     // Update the preview window.
     connect( canvas, &CanvasWidget::brushChanged, this, &MainWindow::updateBrushPreview );
     updateBrushPreview( canvas->getBrushImage() );
@@ -71,10 +84,14 @@ bool MainWindow::saveAs()
 
 void MainWindow::chooseColor()
 {
+#if FANCY_COLOR_PICKER
+    colorPicker->show();
+#else
     QColor newColor = QColorDialog::getColor( canvas->getColor(), 0, "Choose Color...", QColorDialog::ShowAlphaChannel );
     if( !newColor.isValid() ) return;
 
     canvas->setColor( newColor );
+#endif
 }
 
 bool MainWindow::saveChangesIfNeeded()

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.12)
 
 project(airbrush)
 
@@ -37,3 +37,19 @@ add_executable(airbrush
 )
 
 target_link_libraries(airbrush Qt5::Widgets)
+
+## Let's use a fancier color picker
+option(FANCY_COLOR_PICKER "Download and use a fancy color picker" ON)
+if(FANCY_COLOR_PICKER)
+    include(cmake/CPM.cmake)
+    CPMFindPackage(
+        NAME QtColorWidgets
+        GITLAB_REPOSITORY mattbas/Qt-Color-Widgets
+        GIT_TAG 85adc313
+        VERSION 2.2
+        )
+    add_compile_definitions(FANCY_COLOR_PICKER=1)
+    target_link_libraries(airbrush QtColorWidgets)
+else()
+    add_compile_definitions(FANCY_COLOR_PICKER=0)
+endif()
