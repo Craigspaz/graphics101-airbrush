@@ -1,6 +1,10 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.14)
 
 project(airbrush)
+
+# Create the directory for saving artwork and remember its location.
+set(ARTWORK "${PROJECT_SOURCE_DIR}/artwork")
+file(MAKE_DIRECTORY "${ARTWORK}")
 
 # We want C++11
 set (CMAKE_CXX_STANDARD 11)
@@ -27,15 +31,24 @@ endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-add_executable(airbrush
-    mainwindow.ui
-    mainwindow.cpp
-    main.cpp
-    image.cpp
-    canvaswidget.cpp
-    airbrush.cpp
+set(SRCS
+    src/airbrush.cpp
+    src/airbrush.h
+    src/canvaswidget.cpp
+    src/canvaswidget.h
+    src/image.cpp
+    src/image.h
+    src/main.cpp
+    src/mainwindow.cpp
+    src/mainwindow.h
+    src/mainwindow.ui
+    src/stb_image.h
+    src/stb_image_resize.h
+    src/stb_image_write.h
 )
-
+add_executable(airbrush ${SRCS})
+## Add "src" as an include directory for Qt's auto-generated source files.
+target_include_directories(airbrush PUBLIC "src")
 target_link_libraries(airbrush Qt5::Widgets)
 
 ## Let's use a fancier color picker
@@ -53,3 +66,5 @@ if(FANCY_COLOR_PICKER)
 else()
     add_compile_definitions(FANCY_COLOR_PICKER=0)
 endif()
+
+include("CMakeLists-zip.txt" OPTIONAL)

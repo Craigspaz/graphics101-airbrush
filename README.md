@@ -53,7 +53,7 @@ and dragging in the window won't have any effect.
 * Build and run and test that it is working correctly. Qt Creator has a
 great debugger interface.
 
-* Create a painting and save it into the folder. You are encouraged but not required to share it with everyone on Piazza, too. You are also encouraged to share blooper images you create while implementing the assignment.
+* Create a painting and save it in the `artwork` folder. You are encouraged but not required to share it with everyone on Piazza, too. You are also encouraged to share blooper images you create while implementing the assignment.
 
 * Create a file named `Notes.txt` in the folder. Describe any known issues or extra features. Name people in the class who deserve a star for
 helping you (not by giving your their code!).
@@ -62,6 +62,14 @@ helping you (not by giving your their code!).
 `Notes.txt` file and your painting but without your `build` directory)
 as `hw01_lastname_firstname.zip` and
 upload your solution to Blackboard before the deadline.
+
+* When done, run the the `cpack` command from inside your build directory
+to generate an appropriate zip file of your `airbrush` project.
+The zip file it creates, `airbrush.zip`, will include
+the `artwork` subdirectory and your `Notes.txt` file.
+It will ignore unneeded large and numerous directories
+(e.g. `build`).
+Upload your `airbrush.zip` before the deadline.
 
 * **THIS IS AN INDIVIDUAL, NOT A GROUP ASSIGNMENT. That means all code
 written for this assignment should be original! Although you are
