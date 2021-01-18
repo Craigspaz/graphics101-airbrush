@@ -27,6 +27,12 @@ Goals:
 * Successfully install a C++ development environment and the Qt libraries.
 
 
+Background:
+-------
+
+* Book (FoCG,4e): Chapter 3: Raster Images
+* Video: "Lecture 2: Raster Graphics" and "Assignment 1: Airbrush"
+
 Worksheet:
 -------
 
