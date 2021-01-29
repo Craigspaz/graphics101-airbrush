@@ -52,7 +52,7 @@ target_include_directories(airbrush PUBLIC "src")
 target_link_libraries(airbrush Qt5::Widgets)
 
 ## Let's use a fancier color picker
-option(FANCY_COLOR_PICKER "Download and use a fancy color picker" ON)
+option(FANCY_COLOR_PICKER "Download and use a fancy color picker" OFF)
 if(FANCY_COLOR_PICKER)
     include(cmake/CPM.cmake)
     CPMFindPackage(
