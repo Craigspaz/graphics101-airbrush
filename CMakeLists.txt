@@ -29,6 +29,9 @@ if(APPLE AND EXISTS /usr/local/opt/qt5)
 	list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
 endif()
 
+# Once Qt 5.15 is everywhere, we can modify this to support Qt 5 and 6 by putting "5.15" after "Qt5"
+# and then linking with "Qt::Widgets".
+# From: https://www.qt.io/blog/versionless-cmake-targets-qt-5.15
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 set(SRCS
