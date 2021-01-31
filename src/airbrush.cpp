@@ -67,14 +67,14 @@ namespace {
         }
     }
 
-    inline int lerp( int a, int b, real t ) {
+    int lerp( int a, int b, real t ) {
         // Your code goes here.
 
         // Don't forget to round floating point numbers whose decimal part is >= 0.5 up.
         return 0;
     }
 
-    inline ColorRGBA8 composite( const ColorRGBA8& foreground, const ColorRGBA8& background ) {
+    ColorRGBA8 composite( const ColorRGBA8& foreground, const ColorRGBA8& background ) {
         // Your code goes here.
 
         return ColorRGBA8(
