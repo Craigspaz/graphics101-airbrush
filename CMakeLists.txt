@@ -32,7 +32,9 @@ endif()
 # Once Qt 5.15 is everywhere, we can modify this to support Qt 5 and 6 by putting "5.15" after "Qt5"
 # and then linking with "Qt::Widgets".
 # From: https://www.qt.io/blog/versionless-cmake-targets-qt-5.15
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+# This form lets us use all kinds of Qt: https://doc-snapshots.qt.io/qt6-dev/cmake-qt5-and-qt6-compatibility.html
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
 set(SRCS
     src/airbrush.cpp
@@ -52,7 +54,7 @@ set(SRCS
 add_executable(airbrush ${SRCS})
 ## Add "src" as an include directory for Qt's auto-generated source files.
 target_include_directories(airbrush PUBLIC "src")
-target_link_libraries(airbrush Qt5::Widgets)
+target_link_libraries(airbrush PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 ## Let's use a fancier color picker
 option(FANCY_COLOR_PICKER "Download and use a fancy color picker" OFF)
