@@ -71,6 +71,7 @@ the `artwork` subdirectory and your `Notes.txt` file.
 It will ignore unneeded large and numerous directories
 (e.g. `build`).
 Upload your `airbrush.zip` before the deadline.
+(If you can't use `cpack`, try `make zip` or `cmake --build . --target zip`)
 
 * **THIS IS AN INDIVIDUAL, NOT A GROUP ASSIGNMENT. That means all code
 written for this assignment should be original! Although you are
