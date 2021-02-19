@@ -32,6 +32,9 @@ Background:
 
 * Book (FoCG,4e): Chapter 3: Raster Images
 * Video: "Lecture 2: Raster Graphics" and "Assignment 1: Airbrush"
+* Worksheet: Airbrush
+
+(FoCG,4e is *Fundamentals of Computer Graphics (4th edition)* by Steve Marschner and Peter Shirley.)
 
 Worksheet:
 -------
