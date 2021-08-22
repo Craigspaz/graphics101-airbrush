@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(airbrush)
+project(airbrush LANGUAGES CXX C)
 
 # Create the directory for saving artwork and remember its location.
 set(ARTWORK "${PROJECT_SOURCE_DIR}/artwork")
@@ -22,11 +22,11 @@ set(CMAKE_AUTOUIC ON)
 
 # Homebrew doesn't put Qt in the usual place. This finds it.
 # See: https://github.com/Homebrew/homebrew-core/issues/8392
-if(APPLE AND EXISTS /usr/local/opt/qt5)
-	# Homebrew installs Qt5 (up to at least 5.9.1) in
-	# /usr/local/qt5, ensure it can be found by CMake since
-	# it is not in the default /usr/local prefix.
-	list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
+if(APPLE AND EXISTS /usr/local/opt/qt)
+    # Homebrew installs Qt in /usr/local/opt/qt.
+    # Ensure it can be found by CMake since
+    # it is not in the default /usr/local prefix.
+    list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt")
 endif()
 
 # Once Qt 5.15 is everywhere, we can modify this to support Qt 5 and 6 by putting "5.15" after "Qt5"
