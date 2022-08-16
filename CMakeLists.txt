@@ -36,13 +36,17 @@ endif()
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
-set(SRCS
+set(AIRBRUSH_CORE_SRCS
     src/airbrush.cpp
     src/airbrush.h
-    src/canvaswidget.cpp
-    src/canvaswidget.h
     src/image.cpp
     src/image.h
+)
+## Put our core code in a library so that testers can also use it without recompiling.
+add_library(airbrushlib OBJECT ${AIRBRUSH_CORE_SRCS})
+set(SRCS
+    src/canvaswidget.cpp
+    src/canvaswidget.h
     src/main.cpp
     src/mainwindow.cpp
     src/mainwindow.h
@@ -54,7 +58,7 @@ set(SRCS
 add_executable(airbrush ${SRCS})
 ## Add "src" as an include directory for Qt's auto-generated source files.
 target_include_directories(airbrush PUBLIC "src")
-target_link_libraries(airbrush PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(airbrush PRIVATE Qt${QT_VERSION_MAJOR}::Widgets airbrushlib)
 
 ## Let's use a fancier color picker
 option(FANCY_COLOR_PICKER "Download and use a fancy color picker" OFF)
@@ -71,5 +75,9 @@ if(FANCY_COLOR_PICKER)
 else()
     add_compile_definitions(FANCY_COLOR_PICKER=0)
 endif()
+
+## Add tests
+enable_testing()
+add_subdirectory( test )
 
 include("CMakeLists-zip.txt" OPTIONAL)
