@@ -6,7 +6,7 @@
 
 namespace graphics101
 {
-    enum AirBrushShape {
+    enum class AirBrushShape {
         Constant = 0,
         Linear,
         Quadratic,

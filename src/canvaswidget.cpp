@@ -26,7 +26,7 @@ CanvasWidget::CanvasWidget(QWidget *parent) : QWidget(parent)
     radius = 25;
     color = Qt::blue;
     color.setAlpha(64);
-    shape = graphics101::Quadratic;
+    shape = graphics101::AirBrushShape::Quadratic;
     flowRate = 66;
     flowRateTimerID = 0;
     painting = false;

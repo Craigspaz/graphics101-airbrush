@@ -57,10 +57,10 @@ namespace {
         using namespace graphics101;
 
         switch( shape ) {
-            case Constant: return falloff_constant(t);
-            case Linear: return falloff_linear(t);
-            case Quadratic: return falloff_quadratic(t);
-            case Special: return falloff_special(t);
+            case AirBrushShape::Constant: return falloff_constant(t);
+            case AirBrushShape::Linear: return falloff_linear(t);
+            case AirBrushShape::Quadratic: return falloff_quadratic(t);
+            case AirBrushShape::Special: return falloff_special(t);
             default:
                 assert(!"Invalid AirBrushShape. We shouldn't be here.");
                 return -1.;
@@ -140,10 +140,10 @@ namespace graphics101
 
     std::string StringFromAirBrushShape( AirBrushShape shape ) {
         switch( shape ) {
-            case Constant: return "Constant";
-            case Linear: return "Linear";
-            case Quadratic: return "Quadratic";
-            case Special: return "Special";
+            case AirBrushShape::Constant: return "Constant";
+            case AirBrushShape::Linear: return "Linear";
+            case AirBrushShape::Quadratic: return "Quadratic";
+            case AirBrushShape::Special: return "Special";
             default:
                 assert(!"Invalid AirBrushShape. We shouldn't be here.");
                 return "Special";
@@ -151,13 +151,13 @@ namespace graphics101
     }
 
     AirBrushShape AirBrushShapeFromString( const std::string& str ) {
-        if( str == "Constant" ) return Constant;
-        else if( str == "Linear" ) return Linear;
-        else if( str == "Quadratic" ) return Quadratic;
-        else if( str == "Special" ) return Special;
+        if( str == "Constant" ) return AirBrushShape::Constant;
+        else if( str == "Linear" ) return AirBrushShape::Linear;
+        else if( str == "Quadratic" ) return AirBrushShape::Quadratic;
+        else if( str == "Special" ) return AirBrushShape::Special;
         else {
             assert(!"Invalid AirBrushShape. We shouldn't be here.");
-            return Special;
+            return AirBrushShape::Special;
         }
     }
 }
