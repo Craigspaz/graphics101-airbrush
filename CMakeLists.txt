@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.19.2)
 
 project(airbrush LANGUAGES CXX C)
 
@@ -20,9 +20,9 @@ set(CMAKE_AUTOUIC ON)
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # endif()
 
-# Homebrew doesn't put Qt in the usual place. This finds it.
+# Old versions of homebrew didn't put Qt in the usual place. This finds it.
 # See: https://github.com/Homebrew/homebrew-core/issues/8392
-if(APPLE AND EXISTS /usr/local/opt/qt)
+if(APPLE AND ( NOT EXISTS /opt/homebrew ) AND EXISTS /usr/local/opt/qt)
     # Homebrew installs Qt in /usr/local/opt/qt.
     # Ensure it can be found by CMake since
     # it is not in the default /usr/local prefix.
