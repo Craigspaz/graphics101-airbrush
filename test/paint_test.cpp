@@ -33,6 +33,7 @@ TEST_CASE( "PaintAt Test" ) {
     Image canvas( 4, 4, color );
     Image brush( 3, 3, color );
     
+    // Fill with random data.
     /*
     from random import randint
     for x in range(4):
@@ -56,6 +57,7 @@ TEST_CASE( "PaintAt Test" ) {
     canvas.pixel(3,2) = ColorRGBA8( 54, 235, 208 );
     canvas.pixel(3,3) = ColorRGBA8( 37, 127, 186 );
     
+    // Fill with random data.
     /*
     from random import randint
     for x in range(3):
