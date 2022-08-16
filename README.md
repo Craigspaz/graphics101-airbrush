@@ -62,6 +62,8 @@ and dragging in the window won't have any effect.
 * Build and run and test that it is working correctly. Qt Creator has a
 great debugger interface.
 
+* Check your work with the command line tests by running `ctest --verbose`. This will test whether your airbrushes are created correctly (`create_airbrush()`) and whether your compositing (`paint_at()`) is working correctly. If either of these are not working, the GUI will not work as expected.
+
 * Create a painting and save it in the `artwork` folder. You are encouraged but not required to share it with everyone on Piazza, too. You are also encouraged to share blooper images you create while implementing the assignment.
 
 * Create a file named `Notes.txt` in the folder. Describe any known issues or extra features. Name people in the class who deserve a star for
