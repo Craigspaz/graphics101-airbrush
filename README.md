@@ -50,7 +50,7 @@ Getting Started & Handing In:
 * Follow the instructions to install a working development environment: <https://github.com/yig/graphics101>
 
 * Build and run the code. The code should compile and run, but clicking
-and dragging in the window won't have any effect. There is an optional [fancy color picker](https://gitlab.com/mattbas/Qt-Color-Widgets). You can turn it on with `cmake -D FANCY_COLOR_PICKER=ON ..` or with `ccmake ..` and then setting the variable to `ON`.
+and dragging in the window won't have any effect. There is an optional [fancy color picker](https://gitlab.com/mattbas/Qt-Color-Widgets). You can turn it on with `cmake -D FANCY_COLOR_PICKER=1 ..` or with `ccmake ..` and then setting the variable to `ON`.
 
 * Add your code to `airbrush.cpp`.
 

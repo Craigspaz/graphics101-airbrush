@@ -63,12 +63,15 @@ target_link_libraries(airbrush PRIVATE Qt${QT_VERSION_MAJOR}::Widgets airbrushli
 ## Let's use a fancier color picker
 option(FANCY_COLOR_PICKER "Download and use a fancy color picker" OFF)
 if(FANCY_COLOR_PICKER)
-    include(cmake/CPM.cmake)
-    CPMAddPackage(
-        NAME QtColorWidgets
-        GITLAB_REPOSITORY mattbas/Qt-Color-Widgets
+    include(FetchContent)
+    FetchContent_Declare(
+        QtColorWidgets
+        GIT_REPOSITORY https://gitlab.com/mattbas/Qt-Color-Widgets.git
         GIT_TAG 091c2946
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
         )
+    FetchContent_MakeAvailable( QtColorWidgets )
     add_compile_definitions(FANCY_COLOR_PICKER=1)
     target_link_libraries(airbrush PRIVATE QtColorWidgets)
 else()
