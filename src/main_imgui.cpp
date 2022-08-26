@@ -53,6 +53,7 @@ int UploadImageToTexture( const graphics101::Image& image, SDL_Texture* tex ) {
 
 }
 
+// Declaring argv const makes this fail to work on Windows.
 int main( int argc, char* argv[] ) {
     // Setup SDL
     // (Some versions of SDL before <2.0.10 appears to have performance/stalling issues on a minority of Windows systems,
