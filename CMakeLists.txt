@@ -9,32 +9,28 @@ file(MAKE_DIRECTORY "${ARTWORK}")
 # We want C++11
 set (CMAKE_CXX_STANDARD 11)
 
-# Turn on some flags for Qt
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
-# Qt generated files don't see headers here unless we turn this on.
-# UPDATE: I have CMake 3.18, but I still need this.
-# if(CMAKE_VERSION VERSION_LESS "3.7.0")
-    set(CMAKE_INCLUDE_CURRENT_DIR ON)
-# endif()
-
-# Old versions of homebrew didn't put Qt in the usual place. This finds it.
-# See: https://github.com/Homebrew/homebrew-core/issues/8392
-if(APPLE AND ( NOT EXISTS /opt/homebrew ) AND EXISTS /usr/local/opt/qt)
-    # Homebrew installs Qt in /usr/local/opt/qt.
-    # Ensure it can be found by CMake since
-    # it is not in the default /usr/local prefix.
-    list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt")
-endif()
-
-# Once Qt 5.15 is everywhere, we can modify this to support Qt 5 and 6 by putting "5.15" after "Qt5"
-# and then linking with "Qt::Widgets".
-# From: https://www.qt.io/blog/versionless-cmake-targets-qt-5.15
-# This form lets us use all kinds of Qt: https://doc-snapshots.qt.io/qt6-dev/cmake-qt5-and-qt6-compatibility.html
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+## Get our GUI: SDL2
+include(FetchContent)
+set(FETCHCONTENT_QUIET FALSE)
+# SDL2
+FetchContent_Declare(
+    SDL2
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL
+    GIT_TAG release-2.24.0
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable( SDL2 )
+## Get our GUI: Dear ImGui
+set(IMGUI_SRCS
+    ext/imgui/imgui_demo.cpp
+    ext/imgui/imgui_draw.cpp
+    ext/imgui/imgui_impl_sdl.cpp
+    ext/imgui/imgui_impl_sdlrenderer.cpp
+    ext/imgui/imgui_tables.cpp
+    ext/imgui/imgui_widgets.cpp
+    ext/imgui/imgui.cpp
+    )
 
 set(AIRBRUSH_CORE_SRCS
     src/airbrush.cpp
@@ -45,38 +41,16 @@ set(AIRBRUSH_CORE_SRCS
 ## Put our core code in a library so that testers can also use it without recompiling.
 add_library(airbrushlib OBJECT ${AIRBRUSH_CORE_SRCS})
 set(SRCS
-    src/canvaswidget.cpp
-    src/canvaswidget.h
-    src/main.cpp
-    src/mainwindow.cpp
-    src/mainwindow.h
-    src/mainwindow.ui
+    "${IMGUI_SRCS}"
+    src/main_imgui.cpp
     src/stb_image.h
     src/stb_image_resize.h
     src/stb_image_write.h
 )
 add_executable(airbrush ${SRCS})
 ## Add "src" as an include directory for Qt's auto-generated source files.
-target_include_directories(airbrush PUBLIC "src")
-target_link_libraries(airbrush PRIVATE Qt${QT_VERSION_MAJOR}::Widgets airbrushlib)
-
-## Let's use a fancier color picker
-option(FANCY_COLOR_PICKER "Download and use a fancy color picker" OFF)
-if(FANCY_COLOR_PICKER)
-    include(FetchContent)
-    FetchContent_Declare(
-        QtColorWidgets
-        GIT_REPOSITORY https://gitlab.com/mattbas/Qt-Color-Widgets.git
-        GIT_TAG 091c2946
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE
-        )
-    FetchContent_MakeAvailable( QtColorWidgets )
-    add_compile_definitions(FANCY_COLOR_PICKER=1)
-    target_link_libraries(airbrush PRIVATE QtColorWidgets)
-else()
-    add_compile_definitions(FANCY_COLOR_PICKER=0)
-endif()
+target_include_directories(airbrush PRIVATE "src" "ext/imgui")
+target_link_libraries(airbrush PRIVATE SDL2main SDL2-static airbrushlib)
 
 ## Add tests
 enable_testing()
