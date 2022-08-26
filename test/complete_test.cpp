@@ -131,9 +131,19 @@ TEST_CASE( "Complete Test" ) {
     // Center somewhere
     rects.push_back( paint_at( canvas, brush, 200, 150 ) );
     
-#define GENERATE_SOLUTION 1
+#define GENERATE_SOLUTION 0
 #if GENERATE_SOLUTION
-    // Generate the correct output on a solution build:
+    // Process:
+    /*
+    # define GENERATE_SOLUTION 1
+    git checkout solution
+    make
+    ./test/complete_test &> ../test/complete_test_solution.cpp
+    # trim the top and bottom of "../test/complete_test_solution.cpp"
+    # Uncomment "#include "complete_test_solution.cpp""
+    */
+    
+    // Generate the correct output on a solution build.
     canvas.save("complete_test.png");
     
     std::cerr << "    Image canvas_check( " << canvas.width() << ", " << canvas.height() << " );\n";
@@ -143,10 +153,10 @@ TEST_CASE( "Complete Test" ) {
                 << int(canvas.pixel(x,y).r) << ", "
                 << int(canvas.pixel(x,y).g) << ", "
                 << int(canvas.pixel(x,y).b) << ", "
-                << int(canvas.pixel(x,y).a) << " ) ) );\n";
+                << int(canvas.pixel(x,y).a) << " );\n";
         }
     }
-    std::cerr << "    CHECK( MaxImageChannelDifference( canvas, canvas_check ) < 2 )\n\n";
+    std::cerr << "    CHECK( MaxImageChannelDifference( canvas, canvas_check ) < 2 );\n\n";
     std::cerr << "    for( const auto& rect : rects ) {\n";
     for( const auto& rect : rects ) {
         std::cerr << "        CHECK( rect == Rect( " << rect.x << ", " << rect.y << ", " << rect.width << ", " << rect.height << " ) );\n";
