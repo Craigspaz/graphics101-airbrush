@@ -83,27 +83,78 @@ TEST_CASE( "PaintAt Test" ) {
         for( int x = 0; x < canvas_copy.width(); x++ ) {
             for( int y = 0; y < canvas_copy.height(); y++ ) {
                 std::cerr << "CHECK( std::abs( canvas_copy.pixel(" << x << "," << y << ").r - " << int(canvas_copy.pixel(x,y).r) << " ) <= 2 );" << std::endl;
+                std::cerr << "CHECK( std::abs( canvas_copy.pixel(" << x << "," << y << ").g - " << int(canvas_copy.pixel(x,y).g) << " ) <= 2 );" << std::endl;
+                std::cerr << "CHECK( std::abs( canvas_copy.pixel(" << x << "," << y << ").b - " << int(canvas_copy.pixel(x,y).b) << " ) <= 2 );" << std::endl;
+                std::cerr << "CHECK( std::abs( canvas_copy.pixel(" << x << "," << y << ").a - " << int(canvas_copy.pixel(x,y).a) << " ) <= 2 );" << std::endl;
             }
         }
         std::cerr << "CHECK( rect == Rect( " << rect.x << ", " << rect.y << ", " << rect.width << ", " << rect.height << " ) );" << std::endl;
         */
         
         CHECK( std::abs( canvas_copy.pixel(0,0).r - 253 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,0).g - 173 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,0).b - 195 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,0).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(0,1).r - 197 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,1).g - 139 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,1).b - 136 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,1).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(0,2).r - 226 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,2).g - 101 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,2).b - 173 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,2).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(0,3).r - 100 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,3).g - 186 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,3).b - 97 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,3).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(1,0).r - 100 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,0).g - 201 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,0).b - 149 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,0).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(1,1).r - 169 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,1).g - 83 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,1).b - 205 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,1).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(1,2).r - 64 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,2).g - 2 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,2).b - 86 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,2).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(1,3).r - 208 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,3).g - 113 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,3).b - 213 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,3).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(2,0).r - 21 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,0).g - 247 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,0).b - 222 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,0).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(2,1).r - 138 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,1).g - 67 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,1).b - 39 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,1).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(2,2).r - 134 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,2).g - 68 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,2).b - 149 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,2).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(2,3).r - 218 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,3).g - 116 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,3).b - 63 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,3).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(3,0).r - 19 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,0).g - 189 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,0).b - 47 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,0).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(3,1).r - 224 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,1).g - 160 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,1).b - 12 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,1).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(3,2).r - 54 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,2).g - 235 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,2).b - 208 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,2).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(3,3).r - 37 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,3).g - 127 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,3).b - 186 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,3).a - 255 ) <= 2 );
         
         CHECK( rect == Rect( 0, 0, 2, 2 ) );
     }
@@ -117,27 +168,78 @@ TEST_CASE( "PaintAt Test" ) {
         for( int x = 0; x < canvas_copy.width(); x++ ) {
             for( int y = 0; y < canvas_copy.height(); y++ ) {
                 std::cerr << "CHECK( std::abs( canvas_copy.pixel(" << x << "," << y << ").r - " << int(canvas_copy.pixel(x,y).r) << " ) <= 2 );" << std::endl;
+                std::cerr << "CHECK( std::abs( canvas_copy.pixel(" << x << "," << y << ").g - " << int(canvas_copy.pixel(x,y).g) << " ) <= 2 );" << std::endl;
+                std::cerr << "CHECK( std::abs( canvas_copy.pixel(" << x << "," << y << ").b - " << int(canvas_copy.pixel(x,y).b) << " ) <= 2 );" << std::endl;
+                std::cerr << "CHECK( std::abs( canvas_copy.pixel(" << x << "," << y << ").a - " << int(canvas_copy.pixel(x,y).a) << " ) <= 2 );" << std::endl;
             }
         }
         std::cerr << "CHECK( rect == Rect( " << rect.x << ", " << rect.y << ", " << rect.width << ", " << rect.height << " ) );" << std::endl;
         */
         
         CHECK( std::abs( canvas_copy.pixel(0,0).r - 239 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,0).g - 127 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,0).b - 165 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,0).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(0,1).r - 164 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,1).g - 73 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,1).b - 192 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,1).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(0,2).r - 226 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,2).g - 101 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,2).b - 173 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,2).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(0,3).r - 100 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,3).g - 186 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,3).b - 97 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(0,3).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(1,0).r - 127 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,0).g - 164 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,0).b - 158 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,0).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(1,1).r - 166 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,1).g - 83 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,1).b - 205 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,1).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(1,2).r - 64 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,2).g - 2 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,2).b - 86 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,2).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(1,3).r - 208 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,3).g - 113 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,3).b - 213 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(1,3).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(2,0).r - 21 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,0).g - 247 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,0).b - 222 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,0).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(2,1).r - 138 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,1).g - 67 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,1).b - 39 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,1).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(2,2).r - 160 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,2).g - 56 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,2).b - 129 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,2).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(2,3).r - 217 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,3).g - 101 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,3).b - 60 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(2,3).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(3,0).r - 19 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,0).g - 189 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,0).b - 47 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,0).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(3,1).r - 224 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,1).g - 160 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,1).b - 12 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,1).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(3,2).r - 87 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,2).g - 179 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,2).b - 159 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,2).a - 255 ) <= 2 );
         CHECK( std::abs( canvas_copy.pixel(3,3).r - 246 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,3).g - 173 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,3).b - 196 ) <= 2 );
+        CHECK( std::abs( canvas_copy.pixel(3,3).a - 255 ) <= 2 );
         
         CHECK( rect == Rect( 2, 2, 2, 2 ) );
     }
