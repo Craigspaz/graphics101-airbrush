@@ -50,7 +50,7 @@ set(SRCS
 add_executable(airbrush ${SRCS})
 ## Add "src" as an include directory for Qt's auto-generated source files.
 target_include_directories(airbrush PRIVATE "src" "ext/imgui")
-target_link_libraries(airbrush PRIVATE SDL2main SDL2-static airbrushlib)
+target_link_libraries(airbrush PRIVATE SDL2::SDL2main SDL2::SDL2-static airbrushlib)
 
 ## Add tests
 enable_testing()
