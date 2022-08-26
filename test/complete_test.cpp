@@ -24,6 +24,23 @@ bool CloseColors( const ColorRGBA8& lhs, const ColorRGBA8& rhs, int threshold = 
         std::abs( lhs.a - rhs.a ) < threshold
         ;
 }
+int MaxChannelDifference( const ColorRGBA8& lhs, const ColorRGBA8& rhs ) {
+    return std::max( std::abs( lhs.r - rhs.r ), std::max( std::abs( lhs.g - rhs.g ), std::max( std::abs( lhs.b - rhs.b ), std::abs( lhs.a - rhs.a ) ) ) );
+}
+int MaxImageChannelDifference( const Image& lhs, const Image& rhs ) {
+    CHECK( lhs.width() == rhs.width() );
+    CHECK( lhs.height() == rhs.height() );
+    
+    int maxdiff = 0;
+    for( int x = 0; x < lhs.width(); x++ ) {
+        for( int y = 0; y < lhs.height(); y++ ) {
+            const int diff = MaxChannelDifference( lhs.pixel(x,y), rhs.pixel(x,y) );
+            if( diff > maxdiff ) maxdiff = diff;
+        }
+    }
+    
+    return maxdiff;
+}
 
 bool operator==( const Rect& lhs, const Rect& rhs ) {
     return
@@ -114,21 +131,22 @@ TEST_CASE( "Complete Test" ) {
     // Center somewhere
     rects.push_back( paint_at( canvas, brush, 200, 150 ) );
     
-/*
 #define GENERATE_SOLUTION 1
 #if GENERATE_SOLUTION
     // Generate the correct output on a solution build:
     canvas.save("complete_test.png");
     
+    std::cerr << "    Image canvas_check( " << canvas.width() << ", " << canvas.height() << " );\n";
     for( int x = 0; x < canvas.width(); x++ ) {
         for( int y = 0; y < canvas.height(); y++ ) {
-            std::cerr << "    CHECK( CloseColors( canvas.pixel(" << x << "," << y << "), ColorRGBA8( "
+            std::cerr << "    canvas_check.pixel(" << x << "," << y << ") = ColorRGBA8( "
                 << int(canvas.pixel(x,y).r) << ", "
                 << int(canvas.pixel(x,y).g) << ", "
                 << int(canvas.pixel(x,y).b) << ", "
                 << int(canvas.pixel(x,y).a) << " ) ) );\n";
         }
     }
+    std::cerr << "    CHECK( MaxImageChannelDifference( canvas, canvas_check ) < 2 )\n\n";
     std::cerr << "    for( const auto& rect : rects ) {\n";
     for( const auto& rect : rects ) {
         std::cerr << "        CHECK( rect == Rect( " << rect.x << ", " << rect.y << ", " << rect.width << ", " << rect.height << " ) );\n";
@@ -136,6 +154,5 @@ TEST_CASE( "Complete Test" ) {
     std::cerr << "    }\n";
 #endif
     
-#include "complete_test_solution.cpp"
-*/
+// #include "complete_test_solution.cpp"
 }
