@@ -208,7 +208,7 @@ int main( int argc, const char* argv[] ) {
                 // Draw into the canvas.
                 graphics101::Rect dirty = graphics101::paint_at( canvas_image, airbrush_image, mouse_x, mouse_y );
                 // Update the dirty region of the canvas.
-                SDL_Rect dirty_tex = { .x = dirty.x, .y = dirty.y, .w = dirty.width, .h = dirty.height };
+                SDL_Rect dirty_tex = { dirty.x, dirty.y, dirty.width, dirty.height };
                 SDL_UpdateTexture( canvas_tex, &dirty_tex, canvas_image.scanline(dirty.y) + dirty.x, sizeof(graphics101::ColorRGBA8)*( canvas_image.scanline(1)-canvas_image.scanline(0) ) );
                 
                 // Update our mouse tracking state.
