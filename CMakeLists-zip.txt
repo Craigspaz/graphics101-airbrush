@@ -4,11 +4,11 @@
 
 add_custom_target(zip COMMAND
     ${CMAKE_COMMAND} -E tar "cfv" "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.zip" --format=zip
-    ${SRCS}
+    "${AIRBRUSH_CORE_SRCS}"
+    "${SRCS}"
     "Notes.txt"
     "CMakeLists.txt"
     "CMakeLists-zip.txt"
-    "cmake"
     "${ARTWORK}"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
     VERBATIM
@@ -24,11 +24,9 @@ install(FILES
     DESTINATION .
 )
 install(FILES
-    ${SRCS}
+    "${SRCS}"
+    "${AIRBRUSH_CORE_SRCS}"
     DESTINATION "src"
-)
-install(DIRECTORY "cmake"
-    DESTINATION .
 )
 # No trailing slash after the directory name stores the directory not its contents.
 install(DIRECTORY "${ARTWORK}"
