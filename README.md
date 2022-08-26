@@ -24,7 +24,7 @@ Goals:
 
 * Become familiar with C++.
 
-* Successfully install a C++ development environment and the Qt libraries.
+* Successfully install a C++ development environment.
 
 
 Background:
@@ -50,17 +50,16 @@ Getting Started & Handing In:
 * Follow the instructions to install a working development environment: <https://github.com/yig/graphics101>
 
 * Build and run the code. The code should compile and run, but clicking
-and dragging in the window won't have any effect. There is an optional [fancy color picker](https://gitlab.com/mattbas/Qt-Color-Widgets). You can turn it on with `cmake -D FANCY_COLOR_PICKER=1 ..` or with `ccmake ..` and then setting the variable to `ON`.
+and dragging in the window won't have any effect.
 
 * Add your code to `airbrush.cpp`.
 
     * Your code will be written in C++, but nothing fancy. It will look like a
     mix of C and Java.
     * The framework and libraries provide all the support code that you need. You will need to understand a few functions, described below.
-    * The GUI code is written using the open source Qt GUI framework. Your code is isolated from this code. Feel free to enhance the interface if you so desire.
+    * The GUI code is written using the open source Dear ImGui GUI framework. Your code is isolated from this code. Feel free to enhance the interface if you so desire.
 
-* Build and run and test that it is working correctly. Qt Creator has a
-great debugger interface.
+* Build and run and test that it is working correctly.
 
 * Check your work with the command line tests by running `ctest --verbose`. This will test whether your airbrushes are created correctly (`create_airbrush()`) and whether your compositing (`paint_at()`) is working correctly. If either of these are not working, the GUI will not work as expected.
 
