@@ -55,7 +55,7 @@ bool operator==( const Rect& lhs, const Rect& rhs ) {
 using namespace graphics101;
 
 TEST_CASE( "Complete Test" ) {
-    Image canvas( 400, 300, ColorRGBA8( 255, 255, 255, 255 ) );
+    Image canvas( 200, 150, ColorRGBA8( 255, 255, 255, 255 ) );
     Image brush;
     
     // Let's store all of our rects.
@@ -64,72 +64,72 @@ TEST_CASE( "Complete Test" ) {
     // Let's paint at various places.
     
     // Constant blue-ish brush
-    create_airbrush( brush, AirBrushShape::Constant, 145, ColorRGBA8( 25, 77, 210, 100 ) );
+    create_airbrush( brush, AirBrushShape::Constant, 72, ColorRGBA8( 25, 77, 210, 100 ) );
     
     // Top left
     rects.push_back( paint_at( canvas, brush, 1, 3 ) );
     // Top right
-    rects.push_back( paint_at( canvas, brush, 398, 10 ) );
+    rects.push_back( paint_at( canvas, brush, 198, 10 ) );
     // Bottom left
-    rects.push_back( paint_at( canvas, brush, 4, 295 ) );
+    rects.push_back( paint_at( canvas, brush, 4, 147 ) );
     // Bottom right
-    rects.push_back( paint_at( canvas, brush, 396, 294 ) );
+    rects.push_back( paint_at( canvas, brush, 196, 146 ) );
     // Top center
-    rects.push_back( paint_at( canvas, brush, 170, 3 ) );
+    rects.push_back( paint_at( canvas, brush, 85, 3 ) );
     // Right center
-    rects.push_back( paint_at( canvas, brush, 398, 150 ) );
+    rects.push_back( paint_at( canvas, brush, 199, 75 ) );
     // Bottom center
-    rects.push_back( paint_at( canvas, brush, 200, 299 ) );
+    rects.push_back( paint_at( canvas, brush, 100, 149 ) );
     // Left center
-    rects.push_back( paint_at( canvas, brush, 5, 150 ) );
+    rects.push_back( paint_at( canvas, brush, 5, 149 ) );
     // Center somewhere
-    rects.push_back( paint_at( canvas, brush, 100, 100 ) );
+    rects.push_back( paint_at( canvas, brush, 50, 50 ) );
     
     
     // Linear yellow-ish brush
-    create_airbrush( brush, AirBrushShape::Linear, 60, ColorRGBA8( 150, 125, 20, 150 ) );
+    create_airbrush( brush, AirBrushShape::Linear, 30, ColorRGBA8( 150, 125, 20, 150 ) );
     
     // Top left
-    rects.push_back( paint_at( canvas, brush, 10, 13 ) );
+    rects.push_back( paint_at( canvas, brush, 5, 7 ) );
     // Top right
-    rects.push_back( paint_at( canvas, brush, 380, 05 ) );
+    rects.push_back( paint_at( canvas, brush, 190, 2 ) );
     // Bottom left
-    rects.push_back( paint_at( canvas, brush, 9, 285 ) );
+    rects.push_back( paint_at( canvas, brush, 4, 142 ) );
     // Bottom right
-    rects.push_back( paint_at( canvas, brush, 390, 290 ) );
+    rects.push_back( paint_at( canvas, brush, 195, 145 ) );
     // Top center
-    rects.push_back( paint_at( canvas, brush, 210, 20 ) );
+    rects.push_back( paint_at( canvas, brush, 105, 10 ) );
     // Right center
-    rects.push_back( paint_at( canvas, brush, 380, 120 ) );
+    rects.push_back( paint_at( canvas, brush, 190, 60 ) );
     // Bottom center
-    rects.push_back( paint_at( canvas, brush, 230, 280 ) );
+    rects.push_back( paint_at( canvas, brush, 115, 140 ) );
     // Left center
-    rects.push_back( paint_at( canvas, brush, 0, 190 ) );
+    rects.push_back( paint_at( canvas, brush, 0, 95 ) );
     // Center somewhere
-    rects.push_back( paint_at( canvas, brush, 100, 200 ) );
+    rects.push_back( paint_at( canvas, brush, 50, 100 ) );
     
     
     // Quadratic cyan-ish brush
-    create_airbrush( brush, AirBrushShape::Linear, 30, ColorRGBA8( 20, 200, 230, 200 ) );
+    create_airbrush( brush, AirBrushShape::Linear, 15, ColorRGBA8( 20, 200, 230, 200 ) );
     
     // Top left
     rects.push_back( paint_at( canvas, brush, 0, 0 ) );
     // Top right
-    rects.push_back( paint_at( canvas, brush, 399, 0 ) );
+    rects.push_back( paint_at( canvas, brush, 199, 0 ) );
     // Bottom left
-    rects.push_back( paint_at( canvas, brush, 0, 299 ) );
+    rects.push_back( paint_at( canvas, brush, 0, 149 ) );
     // Bottom right
-    rects.push_back( paint_at( canvas, brush, 399, 299 ) );
+    rects.push_back( paint_at( canvas, brush, 199, 149 ) );
     // Top center
-    rects.push_back( paint_at( canvas, brush, 200, 0 ) );
+    rects.push_back( paint_at( canvas, brush, 100, 0 ) );
     // Right center
-    rects.push_back( paint_at( canvas, brush, 399, 150 ) );
+    rects.push_back( paint_at( canvas, brush, 199, 75 ) );
     // Bottom center
-    rects.push_back( paint_at( canvas, brush, 200, 299 ) );
+    rects.push_back( paint_at( canvas, brush, 100, 149 ) );
     // Left center
-    rects.push_back( paint_at( canvas, brush, 0, 150 ) );
+    rects.push_back( paint_at( canvas, brush, 0, 75 ) );
     // Center somewhere
-    rects.push_back( paint_at( canvas, brush, 200, 150 ) );
+    rects.push_back( paint_at( canvas, brush, 100, 75 ) );
     
 #define GENERATE_SOLUTION 0
 #if GENERATE_SOLUTION
@@ -156,13 +156,12 @@ TEST_CASE( "Complete Test" ) {
                 << int(canvas.pixel(x,y).a) << " );\n";
         }
     }
-    std::cerr << "    CHECK( MaxImageChannelDifference( canvas, canvas_check ) < 2 );\n\n";
-    std::cerr << "    for( const auto& rect : rects ) {\n";
-    for( const auto& rect : rects ) {
-        std::cerr << "        CHECK( rect == Rect( " << rect.x << ", " << rect.y << ", " << rect.width << ", " << rect.height << " ) );\n";
+    std::cerr << "    CHECK( MaxImageChannelDifference( canvas, canvas_check ) < 4 );\n\n";
+    for( int i = 0; i < rects.size(); ++i ) {
+        const auto& rect = rects.at(i);
+        std::cerr << "    CHECK( rects.at(" << i << ") == Rect( " << rect.x << ", " << rect.y << ", " << rect.width << ", " << rect.height << " ) );\n";
     }
-    std::cerr << "    }\n";
+#else
+    #include "complete_test_solution.cpp"
 #endif
-    
-// #include "complete_test_solution.cpp"
 }
