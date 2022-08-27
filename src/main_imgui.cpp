@@ -65,7 +65,7 @@ extern "C" int main( int argc, char* argv[] ) {
     }
     
     // Setup window
-    const SDL_WindowFlags window_flags = (SDL_WindowFlags)( SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI );
+    const SDL_WindowFlags window_flags = (SDL_WindowFlags)( SDL_WINDOW_RESIZABLE );
     SDL_Window* window = SDL_CreateWindow( "Airbrush", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags );
     
     // Setup SDL_Renderer instance
