@@ -4,8 +4,8 @@
 
 add_custom_target(zip COMMAND
     ${CMAKE_COMMAND} -E tar "cfv" "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.zip" --format=zip
-    ${AIRBRUSH_CORE_SRCS}
-    ${SRCS}
+    "src"
+    "ext"
     "Notes.txt"
     "CMakeLists.txt"
     "CMakeLists-zip.txt"
