@@ -24,12 +24,15 @@ install(FILES
     "CMakeLists-zip.txt"
     DESTINATION .
 )
-install(FILES
-    ${SRCS}
-    ${AIRBRUSH_CORE_SRCS}
-    DESTINATION "src"
-)
 # No trailing slash after the directory name stores the directory not its contents.
+install(DIRECTORY "src"
+    DESTINATION .
+    PATTERN ".DS_Store" EXCLUDE
+)
+install(DIRECTORY "ext"
+    DESTINATION .
+    PATTERN ".DS_Store" EXCLUDE
+)
 install(DIRECTORY "${ARTWORK}"
     DESTINATION .
     PATTERN ".DS_Store" EXCLUDE
