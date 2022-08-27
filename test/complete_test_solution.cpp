@@ -29999,7 +29999,7 @@
     canvas_check.pixel(199,147) = ColorRGBA8( 64, 186, 197, 255 );
     canvas_check.pixel(199,148) = ColorRGBA8( 57, 188, 204, 255 );
     canvas_check.pixel(199,149) = ColorRGBA8( 50, 191, 209, 255 );
-    CHECK( MaxImageChannelDifference( canvas, canvas_check ) < 4 );
+    CHECK( MaxImageChannelDifference( canvas, canvas_check, 2 ) < 4 );
 
     CHECK( rects.at(0) == Rect( 0, 0, 74, 76 ) );
     CHECK( rects.at(1) == Rect( 126, 0, 74, 83 ) );

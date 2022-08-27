@@ -27,14 +27,25 @@ bool CloseColors( const ColorRGBA8& lhs, const ColorRGBA8& rhs, int threshold = 
 int MaxChannelDifference( const ColorRGBA8& lhs, const ColorRGBA8& rhs ) {
     return std::max( std::abs( lhs.r - rhs.r ), std::max( std::abs( lhs.g - rhs.g ), std::max( std::abs( lhs.b - rhs.b ), std::abs( lhs.a - rhs.a ) ) ) );
 }
-int MaxImageChannelDifference( const Image& lhs, const Image& rhs ) {
+int MaxImageChannelDifference( const Image& lhs, const Image& rhs, int search_8_neighborhood_radius = 0 ) {
     CHECK( lhs.width() == rhs.width() );
     CHECK( lhs.height() == rhs.height() );
     
     int maxdiff = 0;
     for( int x = 0; x < lhs.width(); x++ ) {
         for( int y = 0; y < lhs.height(); y++ ) {
-            const int diff = MaxChannelDifference( lhs.pixel(x,y), rhs.pixel(x,y) );
+            int diff = MaxChannelDifference( lhs.pixel(x,y), rhs.pixel(x,y) );
+            // Search the 8-neighbors for a smaller max channel difference.
+            if( search_8_neighborhood_radius > 0 ) {
+                for( int i = std::max(x-search_8_neighborhood_radius,0); i < std::min(x+search_8_neighborhood_radius,lhs.width()-1); ++i ) {
+                    for( int j = std::max(y-search_8_neighborhood_radius,0); j < std::min(y+search_8_neighborhood_radius,lhs.height()-1); ++j ) {
+                        // Search the 8-neighbors in both directions.
+                        diff = std::min( diff, MaxChannelDifference( lhs.pixel(i,j), rhs.pixel(x,y) ) );
+                        diff = std::min( diff, MaxChannelDifference( lhs.pixel(x,y), rhs.pixel(i,j) ) );
+                    }
+                }
+            }
+            
             if( diff > maxdiff ) maxdiff = diff;
         }
     }
@@ -131,6 +142,8 @@ TEST_CASE( "Complete Test" ) {
     // Center somewhere
     rects.push_back( paint_at( canvas, brush, 100, 75 ) );
     
+    // canvas.save("complete_test.png");
+    
 #define GENERATE_SOLUTION 0
 #if GENERATE_SOLUTION
     // Process:
@@ -156,7 +169,13 @@ TEST_CASE( "Complete Test" ) {
                 << int(canvas.pixel(x,y).a) << " );\n";
         }
     }
-    std::cerr << "    CHECK( MaxImageChannelDifference( canvas, canvas_check ) < 4 );\n\n";
+    // Is a max difference of 4 enough? If someone implements t with different
+    // sub-pixel rounding differences, the edge of the brushes could be 1 pixel off.
+    // For the linear and quadratic brushes, the alpha is approximately 0 along
+    // the boundary, so there wouldn't be a difference. But the constant brush
+    // could have a large difference. So we search for the minimum difference
+    // 1 pixel in all directions.
+    std::cerr << "    CHECK( MaxImageChannelDifference( canvas, canvas_check, 2 ) < 4 );\n\n";
     for( int i = 0; i < rects.size(); ++i ) {
         const auto& rect = rects.at(i);
         std::cerr << "    CHECK( rects.at(" << i << ") == Rect( " << rect.x << ", " << rect.y << ", " << rect.width << ", " << rect.height << " ) );\n";
