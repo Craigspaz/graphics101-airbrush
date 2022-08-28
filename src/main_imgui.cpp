@@ -64,9 +64,30 @@ extern "C" int main( int argc, char* argv[] ) {
         return -1;
     }
     
+    // Load the canvas image from a file if the user passed a filename.
+    graphics101::Image canvas_image;
+    const int DEFAULT_WIDTH = 1280, DEFAULT_HEIGHT = 720;
+    if( argc == 2 ) {
+        const bool success = canvas_image.load( argv[1] );
+        if( !success ) SDL_Log( "Error: Couldn't load image: %s", argv[1] );
+    }
+    // If canvas is empty, make it the default window size.
+    if( canvas_image.width() == 0 || canvas_image.height() == 0 ) {
+        canvas_image.resize( DEFAULT_WIDTH, DEFAULT_HEIGHT, graphics101::ColorRGBA8( 255, 255, 255, 255 ) );
+    }
+    
     // Setup window
     const SDL_WindowFlags window_flags = (SDL_WindowFlags)( SDL_WINDOW_RESIZABLE );
-    SDL_Window* window = SDL_CreateWindow( "Airbrush", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags );
+    SDL_Window* window = SDL_CreateWindow(
+        "Airbrush",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        // Create the window no bigger than its default size.
+        // The rest of the canvas will be hidden.
+        // The window can be resized to reveal it.
+        std::min( DEFAULT_WIDTH, canvas_image.width() ),
+        std::min( DEFAULT_HEIGHT, canvas_image.height() ),
+        window_flags
+    );
     
     // Setup SDL_Renderer instance
     SDL_Renderer* renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED );
@@ -121,17 +142,10 @@ extern "C" int main( int argc, char* argv[] ) {
     graphics101::Image airbrush_image;
     // Create the airbrush image.
     AirbrushFromState( airbrush_image, new_state );
-    // Create the texture.
+    // Create the airbrush texture.
     SDL_Texture* airbrush_tex = CreateTextureForImage( renderer, airbrush_image );
     if( UploadImageToTexture( airbrush_image, airbrush_tex ) != 0 ) SDL_Log( "Error: %s", SDL_GetError() );
-    
-    // The canvas
-    graphics101::Image canvas_image;
-    {
-        int w, h;
-        SDL_GetWindowSize( window, &w, &h );
-        canvas_image.resize( w, h, graphics101::ColorRGBA8( 255, 255, 255, 255 ) );
-    }
+    // Create the canvas texture.
     SDL_Texture* canvas_tex = CreateTextureForImage( renderer, canvas_image );
     if( UploadImageToTexture( canvas_image, canvas_tex ) != 0 ) SDL_Log( "Error: %s", SDL_GetError() );
     
@@ -150,12 +164,22 @@ extern "C" int main( int argc, char* argv[] ) {
             if( event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window) ) { done = true; }
             // Resize canvas upon resize event.
             if( event.type == SDL_WINDOWEVENT && event.window.event ==  SDL_WINDOWEVENT_SIZE_CHANGED ) {
-                SDL_Log( "New window size: %d x %d", event.window.data1, event.window.data2 );
-                canvas_image.resize( event.window.data1, event.window.data2, graphics101::ColorRGBA8(255,255,255,255) );
-                // Re-create the texture.
-                SDL_DestroyTexture( canvas_tex );
-                canvas_tex = CreateTextureForImage( renderer, canvas_image );
-                if( UploadImageToTexture( canvas_image, canvas_tex ) != 0 ) SDL_Log( "Error: %s", SDL_GetError() );
+                const int new_width = event.window.data1;
+                const int new_height = event.window.data2;
+                SDL_Log( "New window size: %d x %d", new_width, new_height );
+                // If the window is now bigger than the canvas, resize the canvas to be larger.
+                // The canvas never resizes to be smaller.
+                if( new_width > canvas_image.width() || new_height > canvas_image.height() ) {
+                    canvas_image.resize(
+                        std::max( canvas_image.width(), new_width ),
+                        std::max( canvas_image.height(), new_height ),
+                        graphics101::ColorRGBA8(255,255,255,255)
+                    );
+                    // Re-create the texture.
+                    SDL_DestroyTexture( canvas_tex );
+                    canvas_tex = CreateTextureForImage( renderer, canvas_image );
+                    if( UploadImageToTexture( canvas_image, canvas_tex ) != 0 ) SDL_Log( "Error: %s", SDL_GetError() );
+                }
             }
         }
         
@@ -178,12 +202,12 @@ extern "C" int main( int argc, char* argv[] ) {
             ImGui::SliderInt("Flow rate", &flow_rate, 0, 300 );
             ImGui::Image( airbrush_tex, ImVec2(airbrush_image.width(), airbrush_image.height()), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f) );
             
+            ImGui::InputTextWithHint( "##", "artwork.png", save_path, IM_ARRAYSIZE(save_path) );
+            ImGui::SameLine();
             if( ImGui::Button("Save") ) {
                 canvas_image.save( save_path );
                 SDL_Log( "Saved image to: %s", save_path );
             }
-            ImGui::SameLine();
-            ImGui::InputTextWithHint( "##", "artwork.png", save_path, IM_ARRAYSIZE(save_path) );
             
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
@@ -221,7 +245,16 @@ extern "C" int main( int argc, char* argv[] ) {
         }
         
         // Draw the canvas.
-        SDL_RenderCopy( renderer, canvas_tex, nullptr, nullptr );
+        {
+            // In case the canvas is bigger than the window, only draw the
+            // upper-left window portion of the canvas.
+            SDL_Rect drawinto = { 0, 0, 0, 0 };
+            SDL_GetWindowSize( window, &drawinto.w, &drawinto.h );
+            // The canvas should always be at least as big as the window.
+            assert( canvas_image.width() >= drawinto.w );
+            assert( canvas_image.height() >= drawinto.h );
+            SDL_RenderCopy( renderer, canvas_tex, &drawinto, nullptr );
+        }
         
         // Draw ImGui
         ImGui_ImplSDLRenderer_RenderDrawData( ImGui::GetDrawData() );
