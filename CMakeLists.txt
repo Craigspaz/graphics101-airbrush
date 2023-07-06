@@ -15,10 +15,13 @@ set(FETCHCONTENT_QUIET FALSE)
 # SDL2
 FetchContent_Declare(
     SDL2
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL
-    GIT_TAG release-2.24.0
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
+    URL https://github.com/libsdl-org/SDL/archive/refs/tags/release-2.28.1.zip
+    URL_HASH MD5=7d72ece5f411ec596d6d5755a9171382
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+#    GIT_REPOSITORY https://github.com/libsdl-org/SDL
+#    GIT_TAG release-2.24.0
+#    GIT_SHALLOW TRUE
+#    GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable( SDL2 )
 ## Get our GUI: Dear ImGui
